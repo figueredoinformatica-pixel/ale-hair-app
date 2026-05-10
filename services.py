@@ -1,4 +1,3 @@
-from sqlalchemy.orm import Session
 from models import Agendamento
 
 # ==================================================
@@ -6,7 +5,7 @@ from models import Agendamento
 # ==================================================
 
 def criar_agendamento(
-    db: Session,
+    db,
     nome,
     telefone,
     servico,
@@ -36,35 +35,40 @@ def criar_agendamento(
 # LISTAR AGENDAMENTOS
 # ==================================================
 
-def listar_agendamentos(db: Session):
+def listar_agendamentos(db):
 
-    return db.query(Agendamento).all()
+    return db.query(
+        Agendamento
+    ).order_by(
+        Agendamento.data,
+        Agendamento.horario
+    ).all()
 
 # ==================================================
 # HORÁRIOS OCUPADOS
 # ==================================================
 
 def horarios_ocupados(
-    db: Session,
+    db,
     data,
     barbeiro
 ):
 
-    agendamentos = db.query(
+    resultados = db.query(
         Agendamento
     ).filter(
         Agendamento.data == data,
         Agendamento.barbeiro == barbeiro
     ).all()
 
-    return [a.horario for a in agendamentos]
+    return [r.horario for r in resultados]
 
 # ==================================================
 # EXCLUIR
 # ==================================================
 
 def excluir_agendamento(
-    db: Session,
+    db,
     id_agendamento
 ):
 
@@ -79,7 +83,3 @@ def excluir_agendamento(
         db.delete(agendamento)
 
         db.commit()
-
-        return True
-
-    return False

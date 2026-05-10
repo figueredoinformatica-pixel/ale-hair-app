@@ -1,33 +1,14 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 
-# ==================================================
-# DATABASE
-# ==================================================
-
-DATABASE_URL = "sqlite:///alehair.db"
-
-# ==================================================
-# ENGINE
-# ==================================================
+DATABASE_URL = "postgresql://neondb_owner:npg_u2RL4hCYbOTH@ep-muddy-glade-acral3e1.sa-east-1.aws.neon.tech/neondb?sslmode=require"
 
 engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
+    DATABASE_URL
 )
-
-# ==================================================
-# SESSION
-# ==================================================
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine
 )
-
-# ==================================================
-# BASE
-# ==================================================
-
-Base = declarative_base()

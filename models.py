@@ -1,9 +1,7 @@
+from sqlalchemy.orm import declarative_base
 from sqlalchemy import Column, Integer, String, Date
-from database import Base
 
-# ==================================================
-# AGENDAMENTOS
-# ==================================================
+Base = declarative_base()
 
 class Agendamento(Base):
 
@@ -11,14 +9,14 @@ class Agendamento(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    nome = Column(String, nullable=False)
+    nome = Column(String)
 
-    telefone = Column(String, nullable=False)
+    telefone = Column(String)
 
-    servico = Column(String, nullable=False)
+    servico = Column(String)
 
-    barbeiro = Column(String, nullable=False)
+    barbeiro = Column(String)
 
-    data = Column(Date, nullable=False)
+    data = Column(Date)
 
-    horario = Column(String, nullable=False)
+    horario = Column(String)
