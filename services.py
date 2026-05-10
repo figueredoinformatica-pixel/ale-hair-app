@@ -1,5 +1,6 @@
 from models import Agendamento
 
+
 # ==================================================
 # CRIAR AGENDAMENTO
 # ==================================================
@@ -31,6 +32,7 @@ def criar_agendamento(
 
     return novo
 
+
 # ==================================================
 # LISTAR AGENDAMENTOS
 # ==================================================
@@ -39,10 +41,8 @@ def listar_agendamentos(db):
 
     return db.query(
         Agendamento
-    ).order_by(
-        Agendamento.data,
-        Agendamento.horario
     ).all()
+
 
 # ==================================================
 # HORÁRIOS OCUPADOS
@@ -54,17 +54,21 @@ def horarios_ocupados(
     barbeiro
 ):
 
-    resultados = db.query(
+    agendamentos = db.query(
         Agendamento
     ).filter(
         Agendamento.data == data,
         Agendamento.barbeiro == barbeiro
     ).all()
 
-    return [r.horario for r in resultados]
+    return [
+        a.horario
+        for a in agendamentos
+    ]
+
 
 # ==================================================
-# EXCLUIR
+# EXCLUIR AGENDAMENTO
 # ==================================================
 
 def excluir_agendamento(
@@ -83,3 +87,19 @@ def excluir_agendamento(
         db.delete(agendamento)
 
         db.commit()
+
+
+# ==================================================
+# BUSCAR POR TELEFONE
+# ==================================================
+
+def buscar_agendamentos_por_telefone(
+    db,
+    telefone
+):
+
+    return db.query(
+        Agendamento
+    ).filter(
+        Agendamento.telefone == telefone
+    ).all()
