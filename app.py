@@ -640,6 +640,74 @@ elif st.session_state.tela == "login_admin":
         )
 
 
+elif st.session_state.tela == "consultar":
+
+    st.button(
+        "⬅️ Voltar",
+        on_click=mudar_tela,
+        args=("catalogo",)
+    )
+
+    st.title("📅 Consultar Agendamento")
+
+    telefone_busca = st.text_input(
+        "Digite seu WhatsApp"
+    )
+
+    if st.button(
+        "Buscar",
+        type="primary",
+        width="stretch"
+    ):
+
+        db = SessionLocal()
+
+        resultados = buscar_agendamentos_por_telefone(
+            db,
+            telefone_busca
+        )
+
+        db.close()
+
+        if resultados:
+
+            st.success(
+                f"{len(resultados)} agendamento(s) encontrado(s)"
+            )
+
+            for ag in resultados:
+
+                st.markdown(
+                    f"""
+                    <div class="resumo">
+
+                    <h3>
+                    💈 {ag.servico}
+                    </h3>
+
+                    <p>
+                    📅 {ag.data.strftime('%d/%m/%Y')}
+                    </p>
+
+                    <p>
+                    ⏰ {ag.horario}
+                    </p>
+
+                    <p>
+                    ✂️ {ag.barbeiro}
+                    </p>
+
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        else:
+
+            st.error(
+                "Nenhum agendamento encontrado."
+            )
+
 # ==================================================
 # PAINEL ADMIN
 # ==================================================
