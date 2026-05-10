@@ -2,10 +2,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # ==================================================
-# BANCO SQLITE
+# DATABASE
 # ==================================================
 
-DATABASE_URL = "sqlite:///barbearia.db"
+DATABASE_URL = "sqlite:///alehair.db"
 
 # ==================================================
 # ENGINE
@@ -17,7 +17,7 @@ engine = create_engine(
 )
 
 # ==================================================
-# SESSÃO
+# SESSION
 # ==================================================
 
 SessionLocal = sessionmaker(

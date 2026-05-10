@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, Date
 from database import Base
 
 # ==================================================
-# TABELA AGENDAMENTOS
+# AGENDAMENTOS
 # ==================================================
 
 class Agendamento(Base):
