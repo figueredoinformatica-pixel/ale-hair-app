@@ -333,7 +333,7 @@ if st.session_state.tela == "catalogo":
          "🔐 Área Administrativa",
         width="stretch",
         on_click=mudar_tela,
-        args=("painel",)
+        args=("login_admin",)
     )
 
 # ==================================================
