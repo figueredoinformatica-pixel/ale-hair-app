@@ -321,25 +321,27 @@ elif st.session_state.tela == "agendamento":
     # ==========================================
 
     st.markdown(
-f"""
-<div class="resumo">
+        f"""
+        <div class="resumo">
 
-<h2 style="margin-top:0;">
-{servico['Nome_Servico']}
-</h2>
+        <h2 style="margin-top:0;">
+        {servico['Nome_Servico']}
+        </h2>
 
-<p style="font-size:18px;">
-💰 R$ {servico['Valor_Padrao']}
-</p>
+        <p style="font-size:18px;">
+        💰 R$ {servico['Valor_Padrao']}
+        </p>
 
-<p style="font-size:16px;">
-⏱ {servico['Tempo_Minutos']} minutos
-</p>
+        <p style="font-size:16px;">
+        ⏱ {servico['Tempo_Minutos']} minutos
+        </p>
 
-</div>
-""",
-unsafe_allow_html=True
+        </div>
+        """,
+        unsafe_allow_html=True
     )
+
+    st.write("")
 
     # ==========================================
     # BARBEIRO
@@ -360,40 +362,33 @@ unsafe_allow_html=True
                 width=120
             )
 
-        else:
-
-            st.image(
-                "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-                width=120
-            )
-
     with col2:
 
         st.markdown(
-"""
-<div class="barbeiro-card">
+            """
+            <div class="barbeiro-card">
 
-<h2 style="margin-bottom:0;">
-Ale
-</h2>
+            <h2 style="margin-bottom:0;">
+            Ale
+            </h2>
 
-<p style="
-color:#6B7280;
-margin-top:8px;
-">
-Especialista em degradê
-</p>
+            <p style="
+            color:#6B7280;
+            margin-top:8px;
+            ">
+            Especialista em degradê
+            </p>
 
-<p style="
-font-weight:700;
-margin-top:14px;
-">
-★ 5.0
-</p>
+            <p style="
+            font-weight:700;
+            margin-top:14px;
+            ">
+            ★ 5.0
+            </p>
 
-</div>
-""",
-unsafe_allow_html=True
+            </div>
+            """,
+            unsafe_allow_html=True
         )
 
     st.write("")
@@ -409,6 +404,8 @@ unsafe_allow_html=True
         min_value=datetime.date.today(),
         label_visibility="collapsed"
     )
+
+    st.write("")
 
     # ==========================================
     # HORÁRIOS
@@ -443,6 +440,42 @@ unsafe_allow_html=True
     db.close()
 
     if livres:
+
+        st.markdown(
+            """
+            <style>
+
+            div[role="radiogroup"]{
+                gap:12px;
+                display:flex;
+                flex-wrap:wrap;
+            }
+
+            div[role="radiogroup"] label{
+                background:white !important;
+                border:1px solid #E5E7EB !important;
+                border-radius:14px !important;
+                padding:12px 18px !important;
+                transition:0.2s !important;
+                min-width:90px;
+                justify-content:center;
+                box-shadow:0 2px 8px rgba(0,0,0,0.04);
+            }
+
+            div[role="radiogroup"] label:hover{
+                border:1px solid #111827 !important;
+                transform:translateY(-2px);
+                box-shadow:0 6px 16px rgba(0,0,0,0.08);
+            }
+
+            div[role="radiogroup"] label[data-baseweb="radio"]{
+                margin-right:0 !important;
+            }
+
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
 
         horario = st.radio(
             "Horários",
