@@ -408,10 +408,6 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
-# ==========================================
-# HORÁRIOS
-# ==========================================
-
 st.markdown("## Horários disponíveis")
 
 horarios = [
@@ -481,6 +477,12 @@ for i, hora in enumerate(horarios):
             st.rerun()
 
 horario = st.session_state.horario
+
+# ==========================================
+# HORÁRIOS
+# ==========================================
+
+
 
 # ==========================================
 # HORÁRIO SELECIONADO
