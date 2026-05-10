@@ -252,6 +252,38 @@ div[data-baseweb="popover"] {
     border-radius: 14px !important;
 }
 
+/* ==================================================
+HORÁRIOS PREMIUM
+================================================== */
+
+.horario-btn button{
+    border-radius:16px !important;
+    height:58px !important;
+    font-weight:700 !important;
+    font-size:16px !important;
+    border:1px solid #E5E7EB !important;
+    background:white !important;
+    transition:0.2s !important;
+}
+
+.horario-btn button:hover{
+    border:1px solid #111827 !important;
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+.horario-ocupado button{
+    background:#F3F4F6 !important;
+    color:#9CA3AF !important;
+    border:1px solid #E5E7EB !important;
+}
+
+.horario-selected button{
+    background:#111827 !important;
+    color:white !important;
+    border:1px solid #111827 !important;
+
+
 </style>
 """
 
