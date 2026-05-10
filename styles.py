@@ -1,230 +1,563 @@
-css_premium = """
-<style>
+import streamlit as st
+import pandas as pd
+import datetime
+import os
+import base64
+
+# ==================================================
+# DATABASE
+# ==================================================
+
+from database import engine, SessionLocal
+from models import Base
+from services import (
+    criar_agendamento,
+    listar_agendamentos,
+    horarios_ocupados,
+    excluir_agendamento
+)
+
+# ==================================================
+# STYLES
+# ==================================================
+
+from styles import css_premium
+
+# ==================================================
+# CRIA TABELAS
+# ==================================================
+
+Base.metadata.create_all(bind=engine)
+
+# ==================================================
+# CONFIG
+# ==================================================
+
+st.set_page_config(
+    page_title="Ale Hair Barbearia",
+    page_icon="✂️",
+    layout="centered"
+)
 
-/* ==================================================
-FUNDO
-================================================== */
+# ==================================================
+# CSS
+# ==================================================
 
-.stApp {
+st.markdown(
+    css_premium,
+    unsafe_allow_html=True
+)
 
-    background-color: #F3F4F6;
-}
+# ==================================================
+# SESSION STATE
+# ==================================================
 
-/* ==================================================
-REMOVE STREAMLIT
-================================================== */
+if "tela" not in st.session_state:
+    st.session_state.tela = "catalogo"
 
-#MainMenu {visibility:hidden;}
-header {visibility:hidden;}
-footer {visibility:hidden;}
+if "servico" not in st.session_state:
+    st.session_state.servico = {}
 
-/* ==================================================
-TIPOGRAFIA
-================================================== */
+# ==================================================
+# FUNÇÕES
+# ==================================================
 
-html, body, [class*="css"] {
+def mudar_tela(nome):
+    st.session_state.tela = nome
+
+
+def abrir_agendamento(servico):
+    st.session_state.servico = servico
+    st.session_state.tela = "agendamento"
+
+
+# ==================================================
+# FUNÇÃO HTML SEGURA
+# ==================================================
+
+def render_html(html):
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
+
+
+# ==================================================
+# DADOS DOS SERVIÇOS
+# ==================================================
 
-    font-family: 'Inter', sans-serif;
-}
+dados = [
+    {
+        "Nome_Servico": "Corte Masculino",
+        "Valor_Padrao": 40,
+        "Tempo_Minutos": 30,
+        "Imagem": "corte.png"
+    },
+    {
+        "Nome_Servico": "Barba",
+        "Valor_Padrao": 30,
+        "Tempo_Minutos": 30,
+        "Imagem": "barba.png"
+    },
+    {
+        "Nome_Servico": "Combo Corte + Barba",
+        "Valor_Padrao": 70,
+        "Tempo_Minutos": 45,
+        "Imagem": "corteebarba.png"
+    }
+]
 
-/* ==================================================
-HERO SECTION
-================================================== */
+df_servicos = pd.DataFrame(dados)
 
-.hero {
+# ==================================================
+# TELA CATÁLOGO
+# ==================================================
 
-    position: relative;
+if st.session_state.tela == "catalogo":
 
-    border-radius: 24px;
+    hero_path = "assets/hero.jpg"
 
-    overflow: hidden;
+    if os.path.exists(hero_path):
 
-    margin-bottom: 28px;
-}
+        with open(hero_path, "rb") as img_file:
 
-.hero img {
+            hero_base64 = base64.b64encode(
+                img_file.read()
+            ).decode()
 
-    width: 100%;
+        render_html(
+            f"""
+            <div class="hero">
 
-    height: 320px;
+                <img src="data:image/jpg;base64,{hero_base64}">
 
-    object-fit: cover;
+                <div class="hero-overlay">
 
-    filter: brightness(0.55);
-}
+                    <div class="hero-title">
+                        Ale Hair
+                    </div>
 
-.hero-overlay {
+                    <div class="hero-sub">
+                        Premium Barber Shop em São Paulo
+                    </div>
 
-    position: absolute;
+                </div>
 
-    top: 0;
+            </div>
+            """
+        )
 
-    left: 0;
+    else:
 
-    right: 0;
+        st.title("✂️ Ale Hair")
 
-    bottom: 0;
+    render_html(
+        """
+        <div class="info-local">
+            📍 Av. Amador Bueno da Veiga, 4438 - Penha de França
+        </div>
+        """
+    )
 
-    display: flex;
+    render_html(
+        """
+        <div class="avaliacao">
+            ★ 5.0 • 120 avaliações
+        </div>
+        """
+    )
+
+    render_html(
+        """
+        <h2 class="titulo-secao">
+            Serviços
+        </h2>
+        """
+    )
+
+    # ==================================================
+    # SERVIÇOS
+    # ==================================================
+
+    for i, servico in df_servicos.iterrows():
+
+        with st.container(border=True):
+
+            c1, c2, c3 = st.columns([1.2, 3, 1.5])
+
+            # ==========================================
+            # IMAGEM
+            # ==========================================
+
+            with c1:
+
+                caminho = f"assets/{servico['Imagem']}"
+
+                if os.path.exists(caminho):
+
+                    st.image(
+                        caminho,
+                        width=95
+                    )
+
+                else:
+
+                    render_html(
+                        """
+                        <div class="icone-servico">
+                            ✂️
+                        </div>
+                        """
+                    )
+
+            # ==========================================
+            # INFO
+            # ==========================================
+
+            with c2:
+
+                render_html(
+                    f"""
+                    <div class="nome-servico">
+                        {servico['Nome_Servico']}
+                    </div>
+                    """
+                )
 
-    flex-direction: column;
+                render_html(
+                    """
+                    <div class="descricao-servico">
+                        Serviço premium com acabamento profissional.
+                    </div>
+                    """
+                )
 
-    justify-content: center;
+                render_html(
+                    f"""
+                    <div class="tempo-servico">
+                        ⏱ {servico['Tempo_Minutos']} minutos
+                    </div>
+                    """
+                )
 
-    padding: 32px;
+            # ==========================================
+            # PREÇO
+            # ==========================================
 
-    color: white;
-}
+            with c3:
 
-.hero-title {
+                render_html(
+                    f"""
+                    <div class="preco-servico">
+                        R$ {servico['Valor_Padrao']}
+                    </div>
+                    """
+                )
 
-    font-size: 42px;
+                st.write("")
 
-    font-weight: 800;
+                st.button(
+                    "Reservar",
+                    key=i,
+                    type="primary",
+                    width="stretch",
+                    on_click=abrir_agendamento,
+                    args=(servico.to_dict(),)
+                )
 
-    margin-bottom: 8px;
-}
+    st.write("")
 
-.hero-sub {
+    st.button(
+        "📊 Painel Administrativo",
+        width="stretch",
+        on_click=mudar_tela,
+        args=("painel",)
+    )
 
-    font-size: 17px;
+# ==================================================
+# TELA AGENDAMENTO
+# ==================================================
 
-    opacity: 0.9;
-}
+elif st.session_state.tela == "agendamento":
 
-/* ==================================================
-SERVICE CARD
-================================================== */
+    st.button(
+        "⬅️ Voltar",
+        on_click=mudar_tela,
+        args=("catalogo",)
+    )
 
-[data-testid="stVerticalBlockBorderWrapper"] {
+    servico = st.session_state.servico
 
-    background: white !important;
+    # ==========================================
+    # RESUMO
+    # ==========================================
 
-    border: none !important;
+    render_html(
+        f"""
+        <div class="resumo">
 
-    border-radius: 22px !important;
+            <h2>
+                {servico['Nome_Servico']}
+            </h2>
 
-    padding: 10px !important;
+            <p>
+                💰 R$ {servico['Valor_Padrao']}
+            </p>
 
-    box-shadow:
-        0 4px 20px rgba(0,0,0,0.04) !important;
+            <p>
+                ⏱ {servico['Tempo_Minutos']} minutos
+            </p>
 
-    margin-bottom: 18px !important;
+        </div>
+        """
+    )
 
-    transition: 0.2s ease;
-}
+    # ==========================================
+    # BARBEIRO
+    # ==========================================
 
-[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    st.markdown("## Seu barbeiro")
 
-    transform: translateY(-2px);
-}
+    col1, col2 = st.columns([1, 2])
 
-/* ==================================================
-BOTÕES
-================================================== */
+    with col1:
 
-div.stButton > button[kind="primary"] {
+        foto = "assets/barbeiro_ale.jpg"
 
-    background: #111827 !important;
+        if os.path.exists(foto):
 
-    border-radius: 14px !important;
+            st.image(
+                foto,
+                width=120
+            )
 
-    border: none !important;
+        else:
 
-    height: 48px !important;
+            st.image(
+                "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+                width=120
+            )
 
-    transition: all 0.2s ease !important;
-}
+    with col2:
 
-div.stButton > button[kind="primary"]:hover {
+        render_html(
+            """
+            <div class="barbeiro-card">
 
-    background: #1F2937 !important;
+                <h2>
+                    Ale
+                </h2>
 
-    transform: scale(1.01);
-}
+                <p>
+                    Especialista em degradê
+                </p>
 
-div.stButton > button[kind="primary"] p {
+                <div class="avaliacao-barbeiro">
+                    ★ 5.0
+                </div>
 
-    color: white !important;
+            </div>
+            """
+        )
 
-    font-weight: 700 !important;
+    st.write("")
 
-    font-size: 15px !important;
-}
+    # ==========================================
+    # DATA
+    # ==========================================
 
-/* ==================================================
-INPUTS
-================================================== */
+    st.markdown("## Escolha a data")
 
-.stTextInput input {
+    data = st.date_input(
+        "Data",
+        min_value=datetime.date.today(),
+        label_visibility="collapsed"
+    )
 
-    border-radius: 14px !important;
+    # ==========================================
+    # HORÁRIOS
+    # ==========================================
 
-    border: 1px solid #E5E7EB !important;
+    st.markdown("## Horários disponíveis")
 
-    height: 50px !important;
-}
+    horarios = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00"
+    ]
 
-.stDateInput input {
+    db = SessionLocal()
 
-    border-radius: 14px !important;
-}
+    ocupados = horarios_ocupados(
+        db,
+        data,
+        "Ale"
+    )
 
-/* ==================================================
-HORÁRIOS
-================================================== */
+    livres = [
+        h for h in horarios
+        if h not in ocupados
+    ]
 
-div[role="radiogroup"] {
+    db.close()
 
-    gap: 8px;
-}
+    if livres:
 
-/* ==================================================
-RESUMO PREMIUM
-================================================== */
+        horario = st.radio(
+            "Horários",
+            livres,
+            horizontal=True,
+            label_visibility="collapsed"
+        )
 
-.resumo {
+    else:
 
-    background: white;
+        horario = None
 
-    padding: 24px;
+        st.error(
+            "Sem horários disponíveis."
+        )
 
-    border-radius: 20px;
+    st.write("")
 
-    box-shadow:
-        0 4px 18px rgba(0,0,0,0.04);
+    # ==========================================
+    # CLIENTE
+    # ==========================================
 
-    margin-bottom: 24px;
-}
+    st.markdown("## Seus dados")
 
-/* ==================================================
-BARBEIRO CARD
-================================================== */
+    nome = st.text_input(
+        "Nome Completo"
+    )
 
-.barbeiro-card {
+    telefone = st.text_input(
+        "WhatsApp"
+    )
 
-    background: white;
+    st.write("")
 
-    padding: 18px;
+    # ==========================================
+    # BOTÃO
+    # ==========================================
 
-    border-radius: 18px;
+    if st.button(
+        "Confirmar Reserva",
+        type="primary",
+        width="stretch"
+    ):
 
-    text-align: center;
+        if not nome or not telefone:
 
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.04);
-}
+            st.warning(
+                "Preencha todos os campos."
+            )
 
-/* ==================================================
-DATAFRAME
-================================================== */
+        elif not horario:
 
-[data-testid="stDataFrame"] {
+            st.warning(
+                "Escolha um horário."
+            )
 
-    border-radius: 18px;
+        else:
 
-    overflow: hidden;
-}
+            db = SessionLocal()
 
-</style>
-"""
+            criar_agendamento(
+                db,
+                nome,
+                telefone,
+                servico["Nome_Servico"],
+                "Ale",
+                data,
+                horario
+            )
+
+            db.close()
+
+            st.success(
+                f"""
+                Reserva confirmada para
+                {data.strftime('%d/%m/%Y')}
+                às {horario}
+                """
+            )
+
+# ==================================================
+# PAINEL ADMIN
+# ==================================================
+
+elif st.session_state.tela == "painel":
+
+    st.button(
+        "⬅️ Voltar",
+        on_click=mudar_tela,
+        args=("catalogo",)
+    )
+
+    st.title("📊 Agenda")
+
+    db = SessionLocal()
+
+    agendamentos = listar_agendamentos(db)
+
+    if agendamentos:
+
+        dados = []
+
+        for a in agendamentos:
+
+            dados.append({
+                "ID": a.id,
+                "Cliente": a.nome,
+                "Telefone": a.telefone,
+                "Serviço": a.servico,
+                "Barbeiro": a.barbeiro,
+                "Data": a.data.strftime("%d/%m/%Y"),
+                "Horário": a.horario
+            })
+
+        df = pd.DataFrame(dados)
+
+        st.dataframe(
+            df,
+            width="stretch",
+            hide_index=True
+        )
+
+        st.write("")
+
+        ids = [a.id for a in agendamentos]
+
+        id_excluir = st.selectbox(
+            "Excluir agendamento",
+            ids
+        )
+
+        if st.button(
+            "Excluir Agendamento",
+            type="primary"
+        ):
+
+            excluir_agendamento(
+                db,
+                id_excluir
+            )
+
+            st.success(
+                "Agendamento removido."
+            )
+
+            st.rerun()
+
+    else:
+
+        st.info(
+            "Nenhum agendamento encontrado."
+        )
+
+    db.close()
