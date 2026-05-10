@@ -321,24 +321,24 @@ elif st.session_state.tela == "agendamento":
     # ==========================================
 
     st.markdown(
-        f"""
-        <div class="resumo">
+f"""
+<div class="resumo">
 
-            <h2 style="margin-top:0;">
-                {servico['Nome_Servico']}
-            </h2>
+<h2 style="margin-top:0;">
+{servico['Nome_Servico']}
+</h2>
 
-            <p style="font-size:18px;">
-                💰 R$ {servico['Valor_Padrao']}
-            </p>
+<p style="font-size:18px;">
+💰 R$ {servico['Valor_Padrao']}
+</p>
 
-            <p style="font-size:16px;">
-                ⏱ {servico['Tempo_Minutos']} minutos
-            </p>
+<p style="font-size:16px;">
+⏱ {servico['Tempo_Minutos']} minutos
+</p>
 
-        </div>
-        """,
-        unsafe_allow_html=True
+</div>
+""",
+unsafe_allow_html=True
     )
 
     # ==========================================
