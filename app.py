@@ -408,141 +408,140 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
-# ==========================================
-# HORÁRIOS
-# ==========================================
+    # ==========================================
+    # HORÁRIOS
+    # ==========================================
 
-st.markdown("## Horários disponíveis")
+    st.markdown("## Horários disponíveis")
 
-horarios = [
-    "09:00",
-    "10:00",
-    "11:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00"
-]
+    horarios = [
+        "09:00",
+        "10:00",
+        "11:00",
+        "14:00",
+        "15:00",
+        "16:00",
+        "17:00",
+        "18:00"
+    ]
 
-db = SessionLocal()
+    db = SessionLocal()
 
-ocupados = horarios_ocupados(
-    db,
-    data,
-    "Ale"
-)
+    ocupados = horarios_ocupados(
+        db,
+        data,
+        "Ale"
+    )
 
-db.close()
+    db.close()
 
-# cria session state se não existir
-if "horario" not in st.session_state:
-    st.session_state.horario = None
+    # cria session state se não existir
+    if "horario" not in st.session_state:
+        st.session_state.horario = None
 
-# grid dos horários
-colunas = st.columns(4)
+    # grid dos horários
+    colunas = st.columns(4)
 
-for i, hora in enumerate(horarios):
+    for i, hora in enumerate(horarios):
 
-    with colunas[i % 4]:
+        with colunas[i % 4]:
 
-        ocupado = hora in ocupados
+            ocupado = hora in ocupados
 
-        selecionado = (
-            st.session_state.horario == hora
+            selecionado = (
+                st.session_state.horario == hora
+            )
+
+            texto_botao = hora
+
+            if ocupado:
+                texto_botao = f"🔒 {hora}"
+
+            tipo_botao = "secondary"
+
+            if selecionado:
+                tipo_botao = "primary"
+
+            if st.button(
+                texto_botao,
+                key=f"hora_{hora}",
+                disabled=ocupado,
+                type=tipo_botao,
+                width="stretch"
+            ):
+
+                st.session_state.horario = hora
+                st.rerun()
+
+    horario = st.session_state.horario
+
+    if horario:
+
+        st.success(
+            f"Horário selecionado: {horario}"
         )
 
-        texto_botao = hora
+        # ==========================================
+        # CLIENTE
+        # ==========================================
 
-        if ocupado:
-            texto_botao = f"🔒 {hora}"
+        st.markdown("## Seus dados")
 
-        tipo_botao = "secondary"
+        nome = st.text_input(
+            "Nome Completo"
+        )
 
-        if selecionado:
-            tipo_botao = "primary"
+        telefone = st.text_input(
+            "WhatsApp"
+        )
+
+        st.write("")
+
+        # ==========================================
+        # CONFIRMAR
+        # ==========================================
 
         if st.button(
-            texto_botao,
-            key=f"hora_{hora}",
-            disabled=ocupado,
-            type=tipo_botao,
+            "Confirmar Reserva",
+            type="primary",
             width="stretch"
         ):
 
-            st.session_state.horario = hora
+            if not nome or not telefone:
 
-            st.rerun()
+                st.warning(
+                    "Preencha todos os campos."
+                )
 
-horario = st.session_state.horario
+            elif not horario:
 
-if horario:
+                st.warning(
+                    "Escolha um horário."
+                )
 
-    st.success(
-        f"Horário selecionado: {horario}"
-    )
+            else:
 
-    # ==========================================
-    # CLIENTE
-    # ==========================================
+                db = SessionLocal()
 
-    st.markdown("## Seus dados")
+                criar_agendamento(
+                    db,
+                    nome,
+                    telefone,
+                    servico["Nome_Servico"],
+                    "Ale",
+                    data,
+                    horario
+                )
 
-    nome = st.text_input(
-        "Nome Completo"
-    )
+                db.close()
 
-    telefone = st.text_input(
-        "WhatsApp"
-    )
-
-    st.write("")
-
-    # ==========================================
-    # CONFIRMAR
-    # ==========================================
-
-    if st.button(
-        "Confirmar Reserva",
-        type="primary",
-        width="stretch"
-    ):
-
-        if not nome or not telefone:
-
-            st.warning(
-                "Preencha todos os campos."
-            )
-
-        elif not horario:
-
-            st.warning(
-                "Escolha um horário."
-            )
-
-        else:
-
-            db = SessionLocal()
-
-            criar_agendamento(
-                db,
-                nome,
-                telefone,
-                servico["Nome_Servico"],
-                "Ale",
-                data,
-                horario
-            )
-
-            db.close()
-
-            st.success(
-                f"""
-                Reserva confirmada para
-                {data.strftime('%d/%m/%Y')}
-                às {horario}
-                """
-            )
+                st.success(
+                    f"""
+                    Reserva confirmada para
+                    {data.strftime('%d/%m/%Y')}
+                    às {horario}
+                    """
+                )
 
 # ==================================================
 # PAINEL ADMIN
