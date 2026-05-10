@@ -316,36 +316,36 @@ elif st.session_state.tela == "agendamento":
 
     servico = st.session_state.servico
 
-    # ==================================================
-    # CARD RESUMO
-    # ==================================================
+    # ==========================================
+    # RESUMO SERVIÇO
+    # ==========================================
 
     st.markdown(
-    f"""
-    <div class="resumo">
+        f"""
+        <div class="resumo">
 
-        <h2>
-        {servico['Nome_Servico']}
-        </h2>
+            <h2 style="margin-top:0;">
+                {servico['Nome_Servico']}
+            </h2>
 
-        <p>
-        💰 R$ {servico['Valor_Padrao']}
-        </p>
+            <p style="font-size:18px;">
+                💰 R$ {servico['Valor_Padrao']}
+            </p>
 
-        <p>
-        ⏱ {servico['Tempo_Minutos']} minutos
-        </p>
+            <p style="font-size:16px;">
+                ⏱ {servico['Tempo_Minutos']} minutos
+            </p>
 
-    </div>
-    """,
-    unsafe_allow_html=True
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    # ==================================================
+    # ==========================================
     # BARBEIRO
-    # ==================================================
+    # ==========================================
 
-    st.markdown("### Seu barbeiro")
+    st.markdown("## Seu barbeiro")
 
     col1, col2 = st.columns([1, 2])
 
@@ -360,38 +360,49 @@ elif st.session_state.tela == "agendamento":
                 width=120
             )
 
+        else:
+
+            st.image(
+                "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+                width=120
+            )
+
     with col2:
 
-       st.markdown(
-    """
-    <div class="barbeiro-card">
+        st.markdown(
+            """
+            <div class="barbeiro-card">
 
-        <h2>
-        Ale
-        </h2>
+                <h2 style="margin-bottom:0;">
+                    Ale
+                </h2>
 
-        <p>
-        Especialista em degradê
-        </p>
+                <p style="
+                    color:#6B7280;
+                    margin-top:8px;
+                ">
+                    Especialista em degradê
+                </p>
 
-        <h4>
-        ★ 5.0
-        </h4>
+                <p style="
+                    font-weight:700;
+                    margin-top:14px;
+                ">
+                    ★ 5.0
+                </p>
 
-    </div>
-    """,
-    unsafe_allow_html=True
+            </div>
+            """,
+            unsafe_allow_html=True
         )
-
-    barbeiro = "Ale"
 
     st.write("")
 
-    # ==================================================
+    # ==========================================
     # DATA
-    # ==================================================
+    # ==========================================
 
-    st.markdown("### Escolha a data")
+    st.markdown("## Escolha a data")
 
     data = st.date_input(
         "Data",
@@ -399,11 +410,11 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
-    # ==================================================
+    # ==========================================
     # HORÁRIOS
-    # ==================================================
+    # ==========================================
 
-    st.markdown("### Horários disponíveis")
+    st.markdown("## Horários disponíveis")
 
     horarios = [
         "09:00",
@@ -421,7 +432,7 @@ elif st.session_state.tela == "agendamento":
     ocupados = horarios_ocupados(
         db,
         data,
-        barbeiro
+        "Ale"
     )
 
     livres = [
@@ -445,16 +456,16 @@ elif st.session_state.tela == "agendamento":
         horario = None
 
         st.error(
-            "Sem horários disponíveis para esta data."
+            "Sem horários disponíveis."
         )
 
     st.write("")
 
-    # ==================================================
+    # ==========================================
     # CLIENTE
-    # ==================================================
+    # ==========================================
 
-    st.markdown("### Seus dados")
+    st.markdown("## Seus dados")
 
     nome = st.text_input(
         "Nome Completo"
@@ -466,9 +477,9 @@ elif st.session_state.tela == "agendamento":
 
     st.write("")
 
-    # ==================================================
-    # BOTÃO RESERVA
-    # ==================================================
+    # ==========================================
+    # CONFIRMAR
+    # ==========================================
 
     if st.button(
         "Confirmar Reserva",
@@ -490,57 +501,26 @@ elif st.session_state.tela == "agendamento":
 
         else:
 
-            with st.spinner(
-                "Confirmando reserva..."
-            ):
+            db = SessionLocal()
 
-                db = SessionLocal()
+            criar_agendamento(
+                db,
+                nome,
+                telefone,
+                servico["Nome_Servico"],
+                "Ale",
+                data,
+                horario
+            )
 
-                criar_agendamento(
-                    db,
-                    nome,
-                    telefone,
-                    servico["Nome_Servico"],
-                    barbeiro,
-                    data,
-                    horario
-                )
+            db.close()
 
-                db.close()
-
-            st.markdown(
+            st.success(
                 f"""
-                <div class="resumo">
-
-                    <h2 style="margin-top:0;">
-                    ✅ Reserva Confirmada
-                    </h2>
-
-                    <p style="font-size:18px;">
-                    <b>{nome}</b>
-                    </p>
-
-                    <hr>
-
-                    <p>
-                    📅 {data.strftime('%d/%m/%Y')}
-                    </p>
-
-                    <p>
-                    ⏰ {horario}
-                    </p>
-
-                    <p>
-                    💈 {barbeiro}
-                    </p>
-
-                    <p>
-                    ✂️ {servico['Nome_Servico']}
-                    </p>
-
-                </div>
-                """,
-                unsafe_allow_html=True
+                Reserva confirmada para
+                {data.strftime('%d/%m/%Y')}
+                às {horario}
+                """
             )
 
 # ==================================================
