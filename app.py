@@ -4,6 +4,8 @@ import datetime
 import os
 import base64
 
+
+
 # ==================================================
 # DATABASE
 # ==================================================
@@ -14,7 +16,8 @@ from services import (
     criar_agendamento,
     listar_agendamentos,
     horarios_ocupados,
-    excluir_agendamento
+    excluir_agendamento,
+    buscar_agendamentos_por_telefone
 )
 
 # ==================================================
@@ -207,6 +210,13 @@ if st.session_state.tela == "catalogo":
         </h2>
         """,
         unsafe_allow_html=True
+    )
+
+    st.button(
+        "📅 Consultar Agendamento",
+        width="stretch",
+        on_click=mudar_tela,
+        args=("consultar",)
     )
 
     # ==================================================
