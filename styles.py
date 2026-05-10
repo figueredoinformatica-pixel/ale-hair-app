@@ -229,28 +229,6 @@ footer{
     visibility:hidden;
 }
 
-/* ============================= */
-/* SELECT HORÁRIO PREMIUM */
-/* ============================= */
-
-.stSelectbox > div > div {
-    border-radius: 14px !important;
-    border: 1px solid #E5E7EB !important;
-    min-height: 55px !important;
-    background: white !important;
-}
-
-.stSelectbox label {
-    font-weight: 600 !important;
-}
-
-div[data-baseweb="select"] > div {
-    border-radius: 14px !important;
-}
-
-div[data-baseweb="popover"] {
-    border-radius: 14px !important;
-}
 
 /* ==================================================
 HORÁRIOS PREMIUM
