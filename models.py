@@ -1,5 +1,12 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, Date
+
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    Date,
+    UniqueConstraint
+)
 
 Base = declarative_base()
 
@@ -7,7 +14,22 @@ class Agendamento(Base):
 
     __tablename__ = "agendamentos"
 
-    id = Column(Integer, primary_key=True, index=True)
+    __table_args__ = (
+
+        UniqueConstraint(
+            "data",
+            "horario",
+            "barbeiro",
+            name="uq_agendamento"
+        ),
+
+    )
+
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
     nome = Column(String)
 
@@ -20,9 +42,3 @@ class Agendamento(Base):
     data = Column(Date)
 
     horario = Column(String)
-
-UniqueConstraint(
-    "data",
-    "horario",
-    "barbeiro"
-)
