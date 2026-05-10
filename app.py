@@ -18,6 +18,18 @@ from services import (
 )
 
 # ==================================================
+# STYLES
+# ==================================================
+
+from styles import css_premium
+
+# ==================================================
+# CRIA TABELAS
+# ==================================================
+
+Base.metadata.create_all(bind=engine)
+
+# ==================================================
 # CONFIG
 # ==================================================
 
@@ -28,137 +40,16 @@ st.set_page_config(
 )
 
 # ==================================================
-# CRIA TABELAS
+# CSS
 # ==================================================
-
-Base.metadata.create_all(bind=engine)
-
-# ==================================================
-# CSS PREMIUM
-# ==================================================
-
-css = """
-<style>
-
-.stApp{
-    background-color:#F5F5F5;
-}
-
-/* HERO */
-
-.hero{
-    position:relative;
-    border-radius:20px;
-    overflow:hidden;
-    margin-bottom:25px;
-}
-
-.hero img{
-    width:100%;
-    height:320px;
-    object-fit:cover;
-}
-
-.hero-overlay{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    padding:30px;
-    background:linear-gradient(
-        transparent,
-        rgba(0,0,0,0.8)
-    );
-}
-
-.hero-title{
-    color:white;
-    font-size:38px;
-    font-weight:700;
-}
-
-.hero-sub{
-    color:#E5E7EB;
-    font-size:16px;
-}
-
-/* CARDS */
-
-.servico-card{
-    background:white;
-    border-radius:18px;
-    padding:16px;
-    margin-bottom:15px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-.resumo{
-    background:white;
-    border-radius:18px;
-    padding:22px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-    margin-bottom:25px;
-}
-
-.barbeiro-card{
-    background:white;
-    border-radius:18px;
-    padding:20px;
-    text-align:center;
-    box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-/* BUTTON */
-
-div.stButton > button{
-    border-radius:12px !important;
-    height:50px !important;
-    font-weight:600 !important;
-    border:none !important;
-}
-
-div.stButton > button[kind="primary"]{
-    background-color:#111827 !important;
-    color:white !important;
-}
-
-div.stButton > button[kind="primary"]:hover{
-    background-color:#1F2937 !important;
-}
-
-/* INPUTS */
-
-.stTextInput input{
-    border-radius:12px !important;
-}
-
-.stDateInput input{
-    border-radius:12px !important;
-}
-
-/* REMOVE STREAMLIT */
-
-#MainMenu{
-    visibility:hidden;
-}
-
-header{
-    visibility:hidden;
-}
-
-footer{
-    visibility:hidden;
-}
-
-</style>
-"""
 
 st.markdown(
-    css,
+    css_premium,
     unsafe_allow_html=True
 )
 
 # ==================================================
-# SESSION
+# SESSION STATE
 # ==================================================
 
 if "tela" not in st.session_state:
@@ -180,7 +71,7 @@ def abrir_agendamento(servico):
     st.session_state.tela = "agendamento"
 
 # ==================================================
-# SERVIÇOS
+# DADOS DOS SERVIÇOS
 # ==================================================
 
 dados = [
@@ -212,20 +103,20 @@ df_servicos = pd.DataFrame(dados)
 
 if st.session_state.tela == "catalogo":
 
-    hero = "assets/hero.jpg"
+    hero_path = "assets/hero.jpg"
 
-    if os.path.exists(hero):
+    if os.path.exists(hero_path):
 
-        with open(hero, "rb") as img:
+        with open(hero_path, "rb") as img_file:
             hero_base64 = base64.b64encode(
-                img.read()
+                img_file.read()
             ).decode()
 
         st.markdown(
             f"""
             <div class="hero">
 
-                <img src="data:image/jpeg;base64,{hero_base64}">
+                <img src="data:image/jpg;base64,{hero_base64}">
 
                 <div class="hero-overlay">
 
@@ -234,7 +125,7 @@ if st.session_state.tela == "catalogo":
                     </div>
 
                     <div class="hero-sub">
-                        Premium Barber Shop
+                        Premium Barber Shop em São Paulo
                     </div>
 
                 </div>
@@ -250,32 +141,53 @@ if st.session_state.tela == "catalogo":
 
     st.markdown(
         """
+        <div style='
+            margin-bottom:20px;
+            color:#6B7280;
+            font-size:15px;
+        '>
         📍 Av. Amador Bueno da Veiga, 4438 - Penha de França
-        """
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    st.write("")
+    st.markdown(
+        """
+        <div style='
+            margin-bottom:25px;
+            font-size:16px;
+            font-weight:600;
+            color:#111827;
+        '>
+        ★ 5.0 • 120 avaliações
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    st.markdown("## Serviços")
+    st.markdown(
+        """
+        <h2 style='margin-bottom:25px;'>
+        Serviços
+        </h2>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
-    # CARDS SERVIÇOS
+    # LISTA DE SERVIÇOS
     # ==================================================
 
     for i, servico in df_servicos.iterrows():
 
-        with st.container():
-
-            st.markdown(
-                """
-                <div class="servico-card">
-                """,
-                unsafe_allow_html=True
-            )
+        with st.container(border=True):
 
             c1, c2, c3 = st.columns([1.2, 3, 1.5])
 
-            # FOTO
+            # ==========================================
+            # IMAGEM
+            # ==========================================
 
             with c1:
 
@@ -290,39 +202,87 @@ if st.session_state.tela == "catalogo":
 
                 else:
 
-                    st.markdown("# ✂️")
+                    st.markdown(
+                        """
+                        <div style='
+                            font-size:60px;
+                            text-align:center;
+                        '>
+                        ✂️
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
+            # ==========================================
             # INFO
+            # ==========================================
 
             with c2:
 
                 st.markdown(
-                    f"### {servico['Nome_Servico']}"
+                    f"""
+                    <div style='
+                        font-size:22px;
+                        font-weight:700;
+                        margin-top:8px;
+                        color:#111827;
+                    '>
+                        {servico['Nome_Servico']}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-                st.caption(
-                    "Acabamento premium profissional"
+                st.markdown(
+                    """
+                    <div style='
+                        color:#6B7280;
+                        font-size:14px;
+                        margin-top:4px;
+                    '>
+                        Serviço premium com acabamento profissional.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-                st.write(
-                    f"⏱ {servico['Tempo_Minutos']} min"
+                st.markdown(
+                    f"""
+                    <div style='
+                        margin-top:10px;
+                        font-size:14px;
+                        color:#111827;
+                        font-weight:600;
+                    '>
+                        ⏱ {servico['Tempo_Minutos']} minutos
+                    </div>
+                    """,
+                    unsafe_allow_html=True
                 )
 
-            # AÇÃO
+            # ==========================================
+            # PREÇO + BOTÃO
+            # ==========================================
 
             with c3:
 
                 st.markdown(
                     f"""
-                    <h2 style="
+                    <div style='
                         text-align:right;
                         margin-top:10px;
-                    ">
+                        font-size:24px;
+                        font-weight:700;
+                        color:#111827;
+                    '>
                     R$ {servico['Valor_Padrao']}
-                    </h2>
+                    </div>
                     """,
                     unsafe_allow_html=True
                 )
+
+                st.write("")
 
                 st.button(
                     "Reservar",
@@ -332,11 +292,6 @@ if st.session_state.tela == "catalogo":
                     on_click=abrir_agendamento,
                     args=(servico.to_dict(),)
                 )
-
-            st.markdown(
-                "</div>",
-                unsafe_allow_html=True
-            )
 
     st.write("")
 
@@ -362,7 +317,7 @@ elif st.session_state.tela == "agendamento":
     servico = st.session_state.servico
 
     # ==================================================
-    # RESUMO
+    # CARD RESUMO
     # ==================================================
 
     st.markdown(
@@ -372,6 +327,8 @@ elif st.session_state.tela == "agendamento":
             <h2>
             {servico['Nome_Servico']}
             </h2>
+
+                   <hr>
 
             <p>
             💰 R$ {servico['Valor_Padrao']}
@@ -390,9 +347,9 @@ elif st.session_state.tela == "agendamento":
     # BARBEIRO
     # ==================================================
 
-    st.markdown("## Seu barbeiro")
+    st.markdown("### Seu barbeiro")
 
-    col1, col2 = st.columns([1,2])
+    col1, col2 = st.columns([1, 2])
 
     with col1:
 
@@ -411,22 +368,30 @@ elif st.session_state.tela == "agendamento":
             """
             <div class="barbeiro-card">
 
-                <h2>
+                <h3 style="margin-bottom:0;">
                 Ale
-                </h2>
+                </h3>
 
-                <p>
+                <p style="
+                    color:#6B7280;
+                    margin-top:6px;
+                ">
                 Especialista em degradê
                 </p>
 
-                <h4>
+                <p style="
+                    font-weight:700;
+                    margin-top:12px;
+                ">
                 ★ 5.0
-                </h4>
+                </p>
 
             </div>
             """,
             unsafe_allow_html=True
         )
+
+    barbeiro = "Ale"
 
     st.write("")
 
@@ -434,7 +399,7 @@ elif st.session_state.tela == "agendamento":
     # DATA
     # ==================================================
 
-    st.markdown("## Escolha a data")
+    st.markdown("### Escolha a data")
 
     data = st.date_input(
         "Data",
@@ -446,7 +411,7 @@ elif st.session_state.tela == "agendamento":
     # HORÁRIOS
     # ==================================================
 
-    st.markdown("## Horários disponíveis")
+    st.markdown("### Horários disponíveis")
 
     horarios = [
         "09:00",
@@ -464,7 +429,7 @@ elif st.session_state.tela == "agendamento":
     ocupados = horarios_ocupados(
         db,
         data,
-        "Ale"
+        barbeiro
     )
 
     livres = [
@@ -488,7 +453,7 @@ elif st.session_state.tela == "agendamento":
         horario = None
 
         st.error(
-            "Sem horários disponíveis."
+            "Sem horários disponíveis para esta data."
         )
 
     st.write("")
@@ -497,7 +462,7 @@ elif st.session_state.tela == "agendamento":
     # CLIENTE
     # ==================================================
 
-    st.markdown("## Seus dados")
+    st.markdown("### Seus dados")
 
     nome = st.text_input(
         "Nome Completo"
@@ -510,7 +475,7 @@ elif st.session_state.tela == "agendamento":
     st.write("")
 
     # ==================================================
-    # CONFIRMAR
+    # BOTÃO RESERVA
     # ==================================================
 
     if st.button(
@@ -533,30 +498,61 @@ elif st.session_state.tela == "agendamento":
 
         else:
 
-            db = SessionLocal()
+            with st.spinner(
+                "Confirmando reserva..."
+            ):
 
-            criar_agendamento(
-                db,
-                nome,
-                telefone,
-                servico["Nome_Servico"],
-                "Ale",
-                data,
-                horario
-            )
+                db = SessionLocal()
 
-            db.close()
+                criar_agendamento(
+                    db,
+                    nome,
+                    telefone,
+                    servico["Nome_Servico"],
+                    barbeiro,
+                    data,
+                    horario
+                )
 
-            st.success(
+                db.close()
+
+            st.markdown(
                 f"""
-                Reserva confirmada para
-                {data.strftime('%d/%m/%Y')}
-                às {horario}
-                """
+                <div class="resumo">
+
+                    <h2 style="margin-top:0;">
+                    ✅ Reserva Confirmada
+                    </h2>
+
+                    <p style="font-size:18px;">
+                    <b>{nome}</b>
+                    </p>
+
+                    <hr>
+
+                    <p>
+                    📅 {data.strftime('%d/%m/%Y')}
+                    </p>
+
+                    <p>
+                    ⏰ {horario}
+                    </p>
+
+                    <p>
+                    💈 {barbeiro}
+                    </p>
+
+                    <p>
+                    ✂️ {servico['Nome_Servico']}
+                    </p>
+
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
 # ==================================================
-# PAINEL
+# PAINEL ADMIN
 # ==================================================
 
 elif st.session_state.tela == "painel":
@@ -601,19 +597,19 @@ elif st.session_state.tela == "painel":
 
         ids = [a.id for a in agendamentos]
 
-        excluir_id = st.selectbox(
+        id_excluir = st.selectbox(
             "Excluir agendamento",
             ids
         )
 
         if st.button(
-            "Excluir",
+            "Excluir Agendamento",
             type="primary"
         ):
 
             excluir_agendamento(
                 db,
-                excluir_id
+                id_excluir
             )
 
             st.success(
@@ -625,7 +621,7 @@ elif st.session_state.tela == "painel":
     else:
 
         st.info(
-            "Nenhum agendamento."
+            "Nenhum agendamento encontrado."
         )
 
     db.close()
