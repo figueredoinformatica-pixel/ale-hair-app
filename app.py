@@ -61,6 +61,9 @@ if "servico" not in st.session_state:
 if "horario" not in st.session_state:
     st.session_state.horario = None
 
+if "admin_logado" not in st.session_state:
+    st.session_state.admin_logado = False
+
 # ==================================================
 # FUNÇÕES
 # ==================================================
@@ -72,6 +75,34 @@ def mudar_tela(nome):
 def abrir_agendamento(servico):
     st.session_state.servico = servico
     st.session_state.tela = "agendamento"
+
+def login_admin(usuario, senha):
+
+    USER = "alexandre"
+    PASS = "ale123"
+
+    if usuario == USER and senha == PASS:
+
+        st.session_state.admin_logado = True
+
+        st.session_state.tela = "painel"
+
+        st.rerun()
+
+    else:
+
+        st.error(
+            "Usuário ou senha inválidos."
+        )
+
+
+def logout_admin():
+
+    st.session_state.admin_logado = False
+
+    st.session_state.tela = "catalogo"
+
+    st.rerun()
 
 # ==================================================
 # DADOS DOS SERVIÇOS
@@ -299,7 +330,7 @@ if st.session_state.tela == "catalogo":
     st.write("")
 
     st.button(
-        "📊 Painel Administrativo",
+         "🔐 Área Administrativa",
         width="stretch",
         on_click=mudar_tela,
         args=("painel",)
@@ -543,11 +574,76 @@ elif st.session_state.tela == "agendamento":
                     """
                 )
 
+
+# ==================================================
+# LOGIN ADMIN
+# ==================================================
+
+elif st.session_state.tela == "login_admin":
+
+    st.button(
+        "⬅️ Voltar",
+        on_click=mudar_tela,
+        args=("catalogo",)
+    )
+
+    st.markdown(
+        """
+        <h1 style='margin-bottom:0;'>
+        🔐 Área Administrativa
+        </h1>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        """
+        <p style='color:#6B7280;'>
+        Acesso restrito para administradores.
+        </p>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.write("")
+
+    usuario = st.text_input(
+        "Usuário"
+    )
+
+    senha = st.text_input(
+        "Senha",
+        type="password"
+    )
+
+    st.write("")
+
+    if st.button(
+        "Entrar",
+        type="primary",
+        width="stretch"
+    ):
+
+        login_admin(
+            usuario,
+            senha
+        )
+
+
 # ==================================================
 # PAINEL ADMIN
 # ==================================================
 
 elif st.session_state.tela == "painel":
+
+    if not st.session_state.admin_logado:
+
+        st.warning(
+            "Faça login para acessar."
+        )
+
+        st.stop()
+
 
     st.button(
         "⬅️ Voltar",
@@ -556,6 +652,11 @@ elif st.session_state.tela == "painel":
     )
 
     st.title("📊 Agenda")
+
+    st.button(
+        "🚪 Sair",
+        on_click=logout_admin
+    )
 
     db = SessionLocal()
 
