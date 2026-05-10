@@ -20,3 +20,9 @@ class Agendamento(Base):
     data = Column(Date)
 
     horario = Column(String)
+
+UniqueConstraint(
+    "data",
+    "horario",
+    "barbeiro"
+)
