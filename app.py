@@ -441,46 +441,10 @@ elif st.session_state.tela == "agendamento":
 
     if livres:
 
-        st.markdown(
-            """
-            <style>
-
-            div[role="radiogroup"]{
-                gap:12px;
-                display:flex;
-                flex-wrap:wrap;
-            }
-
-            div[role="radiogroup"] label{
-                background:white !important;
-                border:1px solid #E5E7EB !important;
-                border-radius:14px !important;
-                padding:12px 18px !important;
-                transition:0.2s !important;
-                min-width:90px;
-                justify-content:center;
-                box-shadow:0 2px 8px rgba(0,0,0,0.04);
-            }
-
-            div[role="radiogroup"] label:hover{
-                border:1px solid #111827 !important;
-                transform:translateY(-2px);
-                box-shadow:0 6px 16px rgba(0,0,0,0.08);
-            }
-
-            div[role="radiogroup"] label[data-baseweb="radio"]{
-                margin-right:0 !important;
-            }
-
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-        horario = st.radio(
-            "Horários",
+        horario = st.selectbox(
+            "Selecione um Horário",
             livres,
-            horizontal=True,
+           
             label_visibility="collapsed"
         )
 
