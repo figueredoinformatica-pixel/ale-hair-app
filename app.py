@@ -204,15 +204,38 @@ elif st.session_state.tela_atual == 'agendamento':
 # 5. ADMIN
 # ==========================================
 elif st.session_state.tela_atual == 'login':
-    st.button("⬅️ Voltar", on_click=mudar_tela, args=('catalogo',))
+    st.button("⬅️ Voltar ao Início", on_click=mudar_tela, args=('catalogo',))
+    st.title("🔒 Acesso Restrito")
     u = st.text_input("Usuário")
     s = st.text_input("Senha", type="password")
     if st.button("Entrar", type="primary"):
-        if u == "admin" and s == "123": mudar_tela('painel'); st.rerun()
-        else: st.error("Erro.")
+        if u == "admin" and s == "123": 
+            mudar_tela('painel') # Vai para a tela painel
+            st.rerun()
+        else: 
+            st.error("❌ Usuário ou senha incorretos! Tente admin e 123.")
 
-elif st.session_state.tela_atual == 'panel': # Corrigido nome da tela
-    st.button("🚪 Sair", on_click=mudar_tela, args=('catalogo',))
-    st.title("📊 Agenda")
-    # Lógica de exibição simplificada para o deploy inicial
-    st.write(st.session_state.agendamentos_salvos)
+# Aqui estava o erro! Eu tinha escrito 'panel' em vez de 'painel'
+elif st.session_state.tela_atual == 'painel': 
+    st.button("🚪 Sair do Sistema", on_click=mudar_tela, args=('catalogo',))
+    st.title("📊 Agenda do Ale Hair")
+    
+    # Recoloquei a lógica para mostrar a tabela bonita e organizada
+    lista_completa = []
+    for data, horarios in st.session_state.agendamentos_salvos.items():
+        for hora, info in horarios.items():
+            info_completa = info.copy()
+            data_formatada = datetime.datetime.strptime(data, "%Y-%m-%d").strftime("%d/%m/%Y")
+            info_completa['Data'] = data_formatada
+            info_completa['Hora'] = hora
+            lista_completa.append(info_completa)
+    
+    if lista_completa:
+        df = pd.DataFrame(lista_completa)
+        df = df[['Data', 'Hora', 'nome', 'telefone', 'servico']]
+        df.columns = ['Data', 'Horário', 'Cliente', 'WhatsApp', 'Serviço']
+        df = df.sort_values(by=['Data', 'Horário'])
+        
+        st.dataframe(df, use_container_width=True, hide_index=True)
+    else:
+        st.info("Sua agenda está vazia no momento. Quando um cliente agendar, aparecerá aqui.")
