@@ -70,6 +70,18 @@ def abrir_agendamento(servico):
     st.session_state.servico = servico
     st.session_state.tela = "agendamento"
 
+
+# ==================================================
+# FUNÇÃO HTML SEGURA
+# ==================================================
+
+def render_html(html):
+    st.markdown(
+        html,
+        unsafe_allow_html=True
+    )
+
+
 # ==================================================
 # DADOS DOS SERVIÇOS
 # ==================================================
@@ -108,11 +120,12 @@ if st.session_state.tela == "catalogo":
     if os.path.exists(hero_path):
 
         with open(hero_path, "rb") as img_file:
+
             hero_base64 = base64.b64encode(
                 img_file.read()
             ).decode()
 
-        st.markdown(
+        render_html(
             f"""
             <div class="hero">
 
@@ -131,52 +144,39 @@ if st.session_state.tela == "catalogo":
                 </div>
 
             </div>
-            """,
-            unsafe_allow_html=True
+            """
         )
 
     else:
 
         st.title("✂️ Ale Hair")
 
-    st.markdown(
+    render_html(
         """
-        <div style='
-            margin-bottom:20px;
-            color:#6B7280;
-            font-size:15px;
-        '>
-        📍 Av. Amador Bueno da Veiga, 4438 - Penha de França
+        <div class="info-local">
+            📍 Av. Amador Bueno da Veiga, 4438 - Penha de França
         </div>
-        """,
-        unsafe_allow_html=True
+        """
     )
 
-    st.markdown(
+    render_html(
         """
-        <div style='
-            margin-bottom:25px;
-            font-size:16px;
-            font-weight:600;
-            color:#111827;
-        '>
-        ★ 5.0 • 120 avaliações
+        <div class="avaliacao">
+            ★ 5.0 • 120 avaliações
         </div>
-        """,
-        unsafe_allow_html=True
+        """
     )
 
-    st.markdown(
+    render_html(
         """
-        <h2 style='margin-bottom:25px;'>
-        Serviços
+        <h2 class="titulo-secao">
+            Serviços
         </h2>
-        """,
-        unsafe_allow_html=True
+        """
     )
 
     # ==================================================
-    # LISTA DE SERVIÇOS
+    # SERVIÇOS
     # ==================================================
 
     for i, servico in df_servicos.iterrows():
@@ -202,16 +202,12 @@ if st.session_state.tela == "catalogo":
 
                 else:
 
-                    st.markdown(
+                    render_html(
                         """
-                        <div style='
-                            font-size:60px;
-                            text-align:center;
-                        '>
-                        ✂️
+                        <div class="icone-servico">
+                            ✂️
                         </div>
-                        """,
-                        unsafe_allow_html=True
+                        """
                     )
 
             # ==========================================
@@ -220,66 +216,42 @@ if st.session_state.tela == "catalogo":
 
             with c2:
 
-                st.markdown(
+                render_html(
                     f"""
-                    <div style='
-                        font-size:22px;
-                        font-weight:700;
-                        margin-top:8px;
-                        color:#111827;
-                    '>
+                    <div class="nome-servico">
                         {servico['Nome_Servico']}
                     </div>
-                    """,
-                    unsafe_allow_html=True
+                    """
                 )
 
-                st.markdown(
+                render_html(
                     """
-                    <div style='
-                        color:#6B7280;
-                        font-size:14px;
-                        margin-top:4px;
-                    '>
+                    <div class="descricao-servico">
                         Serviço premium com acabamento profissional.
                     </div>
-                    """,
-                    unsafe_allow_html=True
+                    """
                 )
 
-                st.markdown(
+                render_html(
                     f"""
-                    <div style='
-                        margin-top:10px;
-                        font-size:14px;
-                        color:#111827;
-                        font-weight:600;
-                    '>
+                    <div class="tempo-servico">
                         ⏱ {servico['Tempo_Minutos']} minutos
                     </div>
-                    """,
-                    unsafe_allow_html=True
+                    """
                 )
 
             # ==========================================
-            # PREÇO + BOTÃO
+            # PREÇO
             # ==========================================
 
             with c3:
 
-                st.markdown(
+                render_html(
                     f"""
-                    <div style='
-                        text-align:right;
-                        margin-top:10px;
-                        font-size:24px;
-                        font-weight:700;
-                        color:#111827;
-                    '>
-                    R$ {servico['Valor_Padrao']}
+                    <div class="preco-servico">
+                        R$ {servico['Valor_Padrao']}
                     </div>
-                    """,
-                    unsafe_allow_html=True
+                    """
                 )
 
                 st.write("")
@@ -317,28 +289,27 @@ elif st.session_state.tela == "agendamento":
     servico = st.session_state.servico
 
     # ==========================================
-    # RESUMO SERVIÇO
+    # RESUMO
     # ==========================================
 
-    st.markdown(
-f"""
-<div class="resumo">
+    render_html(
+        f"""
+        <div class="resumo">
 
-<h2 style="margin-top:0;">
-{servico['Nome_Servico']}
-</h2>
+            <h2>
+                {servico['Nome_Servico']}
+            </h2>
 
-<p style="font-size:18px;">
-💰 R$ {servico['Valor_Padrao']}
-</p>
+            <p>
+                💰 R$ {servico['Valor_Padrao']}
+            </p>
 
-<p style="font-size:16px;">
-⏱ {servico['Tempo_Minutos']} minutos
-</p>
+            <p>
+                ⏱ {servico['Tempo_Minutos']} minutos
+            </p>
 
-</div>
-""",
-unsafe_allow_html=True
+        </div>
+        """
     )
 
     # ==========================================
@@ -369,31 +340,24 @@ unsafe_allow_html=True
 
     with col2:
 
-        st.markdown(
-"""
-<div class="barbeiro-card">
+        render_html(
+            """
+            <div class="barbeiro-card">
 
-<h2 style="margin-bottom:0;">
-Ale
-</h2>
+                <h2>
+                    Ale
+                </h2>
 
-<p style="
-color:#6B7280;
-margin-top:8px;
-">
-Especialista em degradê
-</p>
+                <p>
+                    Especialista em degradê
+                </p>
 
-<p style="
-font-weight:700;
-margin-top:14px;
-">
-★ 5.0
-</p>
+                <div class="avaliacao-barbeiro">
+                    ★ 5.0
+                </div>
 
-</div>
-""",
-unsafe_allow_html=True
+            </div>
+            """
         )
 
     st.write("")
@@ -478,7 +442,7 @@ unsafe_allow_html=True
     st.write("")
 
     # ==========================================
-    # CONFIRMAR
+    # BOTÃO
     # ==========================================
 
     if st.button(
