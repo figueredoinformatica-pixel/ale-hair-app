@@ -58,6 +58,9 @@ if "tela" not in st.session_state:
 if "servico" not in st.session_state:
     st.session_state.servico = {}
 
+if "horario" not in st.session_state:
+    st.session_state.horario = None
+
 # ==================================================
 # FUNÇÕES
 # ==================================================
@@ -405,59 +408,89 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
-    st.write("")
+# ==========================================
+# HORÁRIOS
+# ==========================================
 
-    # ==========================================
-    # HORÁRIOS
-    # ==========================================
+st.markdown("## Horários disponíveis")
 
-    st.markdown("## Horários disponíveis")
+horarios = [
+    "09:00",
+    "10:00",
+    "11:00",
+    "14:00",
+    "15:00",
+    "16:00",
+    "17:00",
+    "18:00"
+]
 
-    horarios = [
-        "09:00",
-        "10:00",
-        "11:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00"
-    ]
+db = SessionLocal()
 
-    db = SessionLocal()
+ocupados = horarios_ocupados(
+    db,
+    data,
+    "Ale"
+)
 
-    ocupados = horarios_ocupados(
-        db,
-        data,
-        "Ale"
+db.close()
+
+# ==========================================
+# SESSION STATE
+# ==========================================
+
+if "horario" not in st.session_state:
+    st.session_state.horario = None
+
+# ==========================================
+# GRID
+# ==========================================
+
+cols = st.columns(4)
+
+for i, hora in enumerate(horarios):
+
+    with cols[i % 4]:
+
+        ocupado = hora in ocupados
+
+        selecionado = (
+            st.session_state.horario == hora
+        )
+
+        texto = hora
+
+        if ocupado:
+            texto = f"🔒 {hora}"
+
+        tipo = "secondary"
+
+        if selecionado:
+            tipo = "primary"
+
+        clicou = st.button(
+            texto,
+            key=f"hora_{hora}",
+            disabled=ocupado,
+            type=tipo,
+            width="stretch"
+        )
+
+        if clicou:
+            st.session_state.horario = hora
+            st.rerun()
+
+horario = st.session_state.horario
+
+# ==========================================
+# HORÁRIO SELECIONADO
+# ==========================================
+
+if horario:
+
+    st.success(
+        f"Horário selecionado: {horario}"
     )
-
-    livres = [
-        h for h in horarios
-        if h not in ocupados
-    ]
-
-    db.close()
-
-    if livres:
-
-        horario = st.selectbox(
-            "Selecione um Horário",
-            livres,
-           
-            label_visibility="collapsed"
-        )
-
-    else:
-
-        horario = None
-
-        st.error(
-            "Sem horários disponíveis."
-        )
-
-    st.write("")
-
     # ==========================================
     # CLIENTE
     # ==========================================
