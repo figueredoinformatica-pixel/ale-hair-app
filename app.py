@@ -321,26 +321,24 @@ elif st.session_state.tela == "agendamento":
     # ==================================================
 
     st.markdown(
-        f"""
-        <div class="resumo">
+    f"""
+    <div class="resumo">
 
-            <h2>
-            {servico['Nome_Servico']}
-            </h2>
+        <h2>
+        {servico['Nome_Servico']}
+        </h2>
 
-                   <hr>
+        <p>
+        💰 R$ {servico['Valor_Padrao']}
+        </p>
 
-            <p>
-            💰 R$ {servico['Valor_Padrao']}
-            </p>
+        <p>
+        ⏱ {servico['Tempo_Minutos']} minutos
+        </p>
 
-            <p>
-            ⏱ {servico['Tempo_Minutos']} minutos
-            </p>
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    </div>
+    """,
+    unsafe_allow_html=True
     )
 
     # ==================================================
@@ -364,31 +362,25 @@ elif st.session_state.tela == "agendamento":
 
     with col2:
 
-        st.markdown(
-            """
-            <div class="barbeiro-card">
+       st.markdown(
+    """
+    <div class="barbeiro-card">
 
-                <h3 style="margin-bottom:0;">
-                Ale
-                </h3>
+        <h2>
+        Ale
+        </h2>
 
-                <p style="
-                    color:#6B7280;
-                    margin-top:6px;
-                ">
-                Especialista em degradê
-                </p>
+        <p>
+        Especialista em degradê
+        </p>
 
-                <p style="
-                    font-weight:700;
-                    margin-top:12px;
-                ">
-                ★ 5.0
-                </p>
+        <h4>
+        ★ 5.0
+        </h4>
 
-            </div>
-            """,
-            unsafe_allow_html=True
+    </div>
+    """,
+    unsafe_allow_html=True
         )
 
     barbeiro = "Ale"
