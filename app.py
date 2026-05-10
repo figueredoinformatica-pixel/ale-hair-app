@@ -408,6 +408,10 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
+# ==========================================
+# HORÁRIOS
+# ==========================================
+
 st.markdown("## Horários disponíveis")
 
 horarios = [
@@ -431,22 +435,16 @@ ocupados = horarios_ocupados(
 
 db.close()
 
-# ==========================================
-# SESSION STATE
-# ==========================================
-
+# cria session state se não existir
 if "horario" not in st.session_state:
     st.session_state.horario = None
 
-# ==========================================
-# GRID
-# ==========================================
-
-cols = st.columns(4)
+# grid dos horários
+colunas = st.columns(4)
 
 for i, hora in enumerate(horarios):
 
-    with cols[i % 4]:
+    with colunas[i % 4]:
 
         ocupado = hora in ocupados
 
@@ -454,45 +452,36 @@ for i, hora in enumerate(horarios):
             st.session_state.horario == hora
         )
 
-        texto = hora
+        texto_botao = hora
 
         if ocupado:
-            texto = f"🔒 {hora}"
+            texto_botao = f"🔒 {hora}"
 
-        tipo = "secondary"
+        tipo_botao = "secondary"
 
         if selecionado:
-            tipo = "primary"
+            tipo_botao = "primary"
 
-        clicou = st.button(
-            texto,
+        if st.button(
+            texto_botao,
             key=f"hora_{hora}",
             disabled=ocupado,
-            type=tipo,
+            type=tipo_botao,
             width="stretch"
-        )
+        ):
 
-        if clicou:
             st.session_state.horario = hora
+
             st.rerun()
 
 horario = st.session_state.horario
-
-# ==========================================
-# HORÁRIOS
-# ==========================================
-
-
-
-# ==========================================
-# HORÁRIO SELECIONADO
-# ==========================================
 
 if horario:
 
     st.success(
         f"Horário selecionado: {horario}"
     )
+
     # ==========================================
     # CLIENTE
     # ==========================================
