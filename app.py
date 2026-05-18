@@ -83,9 +83,7 @@ def mudar_tela(nome):
 def abrir_agendamento(servico):
 
     st.session_state.servico = servico
-
     st.session_state.horario = None
-
     st.session_state.tela = "agendamento"
 
 
@@ -97,7 +95,6 @@ def login_admin(usuario, senha):
     if usuario == USER and senha == PASS:
 
         st.session_state.admin_logado = True
-
         st.session_state.tela = "painel"
 
         st.rerun()
@@ -112,7 +109,6 @@ def login_admin(usuario, senha):
 def logout_admin():
 
     st.session_state.admin_logado = False
-
     st.session_state.tela = "catalogo"
 
     st.rerun()
@@ -191,6 +187,78 @@ if st.session_state.tela == "catalogo":
 
         st.title("✂️ Ale Hair")
 
+    # ==================================================
+    # ENDEREÇO
+    # ==================================================
+
+    st.markdown(
+        """
+        <div class="resumo">
+
+        <h3 style="margin-top:0;">
+        📍 Endereço
+        </h3>
+
+        <p>
+        Av. Amador Bueno da Veiga, 4438
+        </p>
+
+        <p>
+        Penha de França - São Paulo
+        </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # ==================================================
+    # HORÁRIO
+    # ==================================================
+
+    st.markdown(
+        """
+        <div class="resumo">
+
+        <h3 style="margin-top:0;">
+        🕒 Horário de funcionamento
+        </h3>
+
+        <p>Segunda a Sexta → 08:00 às 20:00</p>
+
+        <p>Sábado → 08:00 às 18:00</p>
+
+        <p>Domingo → Fechado</p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # ==================================================
+    # REDES
+    # ==================================================
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.link_button(
+            "📱 WhatsApp",
+            "https://wa.me/5511999999999",
+            use_container_width=True
+        )
+
+    with col2:
+
+        st.link_button(
+            "📸 Instagram",
+            "https://instagram.com/alehair",
+            use_container_width=True
+        )
+
+    st.write("")
+
     st.markdown(
         """
         <h2 style='margin-bottom:25px;'>
@@ -237,6 +305,7 @@ if st.session_state.tela == "catalogo":
                         font-size:22px;
                         font-weight:700;
                         margin-top:8px;
+                        color:white;
                     '>
                         {servico['Nome_Servico']}
                     </div>
@@ -249,6 +318,7 @@ if st.session_state.tela == "catalogo":
                     <div style='
                         font-size:14px;
                         margin-top:4px;
+                        color:#D1D5DB;
                     '>
                         Serviço premium com acabamento profissional.
                     </div>
@@ -262,6 +332,7 @@ if st.session_state.tela == "catalogo":
                         margin-top:10px;
                         font-size:14px;
                         font-weight:600;
+                        color:white;
                     '>
                         ⏱ {servico['Tempo_Minutos']} minutos
                     </div>
@@ -282,6 +353,7 @@ if st.session_state.tela == "catalogo":
                         margin-top:10px;
                         font-size:24px;
                         font-weight:700;
+                        color:white;
                     '>
                     R$ {servico['Valor_Padrao']}
                     </div>
@@ -449,10 +521,6 @@ elif st.session_state.tela == "agendamento":
 
         st.write("")
 
-        # ==================================================
-        # CONFIRMAR
-        # ==================================================
-
         if st.button(
             "Confirmar Reserva",
             type="primary",
@@ -490,69 +558,70 @@ elif st.session_state.tela == "agendamento":
                     """
                 )
 
- # ==================================================
-# CONSULTAR AGENDAMENTO
-# ==================================================
+        # ==================================================
+        # CONSULTAR AGENDAMENTO
+        # ==================================================
 
-st.markdown("---")
+        st.markdown("---")
 
-st.markdown("## 🔎 Consultar agendamento")
+        st.markdown("## 🔎 Consultar agendamento")
 
-telefone_busca = st.text_input(
-    "Digite seu WhatsApp",
-    placeholder="(11) 99999-9999",
-    max_chars=15,
-    key="consulta_agendamento"
-)
-
-if st.button(
-    "Consultar",
-    key="btn_consultar"
-):
-
-    db = SessionLocal()
-
-    resultados = buscar_agendamentos_por_telefone(
-        db,
-        telefone_busca
-    )
-
-    db.close()
-
-    if resultados:
-
-        st.success(
-            f"{len(resultados)} agendamento(s) encontrado(s)"
+        telefone_busca = st.text_input(
+            "Digite seu WhatsApp",
+            placeholder="(11) 99999-9999",
+            max_chars=15,
+            key="consulta_agendamento"
         )
 
-        for ag in resultados:
+        if st.button(
+            "Consultar",
+            key="btn_consultar"
+        ):
 
-            st.markdown(
-                f"""
-                <div class="resumo">
+            db = SessionLocal()
 
-                <h3>
-                💈 {ag.servico}
-                </h3>
-
-                <p>
-                📅 {ag.data.strftime('%d/%m/%Y')}
-                </p>
-
-                <p>
-                ⏰ {ag.horario}
-                </p>
-
-                </div>
-                """,
-                unsafe_allow_html=True
+            resultados = buscar_agendamentos_por_telefone(
+                db,
+                telefone_busca
             )
 
-    else:
+            db.close()
 
-        st.warning(
-            "Nenhum agendamento encontrado."
-        )
+            if resultados:
+
+                st.success(
+                    f"{len(resultados)} agendamento(s) encontrado(s)"
+                )
+
+                for ag in resultados:
+
+                    st.markdown(
+                        f"""
+                        <div class="resumo">
+
+                        <h3>
+                        💈 {ag.servico}
+                        </h3>
+
+                        <p>
+                        📅 {ag.data.strftime('%d/%m/%Y')}
+                        </p>
+
+                        <p>
+                        ⏰ {ag.horario}
+                        </p>
+
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+
+            else:
+
+                st.warning(
+                    "Nenhum agendamento encontrado."
+                )
+
 # ==================================================
 # LOGIN ADMIN
 # ==================================================
@@ -633,15 +702,10 @@ elif st.session_state.tela == "painel":
             dados.append({
 
                 "ID": a.id,
-
                 "Cliente": a.nome,
-
                 "Telefone": a.telefone,
-
                 "Serviço": a.servico,
-
                 "Data": a.data.strftime("%d/%m/%Y"),
-
                 "Horário": a.horario
 
             })
