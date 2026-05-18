@@ -225,5 +225,29 @@ small {
     background: #666666;
 }
 
+/* ==================================================
+CALENDÁRIO
+================================================== */
+
+.stDateInput input {
+    color: white !important;
+}
+
+div[data-baseweb="calendar"] {
+    background-color: white !important;
+}
+
+div[data-baseweb="calendar"] * {
+    color: black !important;
+}
+
+div[data-baseweb="calendar"] button {
+    color: black !important;
+}
+
+div[data-baseweb="calendar"] svg {
+    fill: black !important;
+}
+
 </style>
 """
