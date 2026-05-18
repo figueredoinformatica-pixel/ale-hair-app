@@ -319,7 +319,7 @@ df_servicos = pd.DataFrame(dados)
 
 if st.session_state.tela == "catalogo":
 
-    hero_path = "assets/hero.jpeg"
+    hero_path = "assets/hero.jpg"
 
     if os.path.exists(hero_path):
 
