@@ -95,38 +95,17 @@ with st.sidebar:
     st.markdown(
         """
 <style>
-/* Fundo da Sidebar */
 section[data-testid="stSidebar"]{
     background-color:#050505;
     border-right:2px solid #D4AF37;
 }
-/* Textos gerais da sidebar */
-section[data-testid="stSidebar"] div, section[data-testid="stSidebar"] span {
-    color: white;
-}
-/* Estilizando os botões de link (WhatsApp e Instagram) */
-div[data-testid="stLinkButton"] button {
-    background-color: #111111 !important;
-    border: 1px solid #D4AF37 !important;
-    transition: 0.3s;
-}
-div[data-testid="stLinkButton"] button p {
-    color: #D4AF37 !important;
-    font-weight: 600 !important;
-}
-div[data-testid="stLinkButton"] button:hover {
-    background-color: #D4AF37 !important;
-}
-div[data-testid="stLinkButton"] button:hover p {
-    color: black !important;
+section[data-testid="stSidebar"] *{
+    color:white;
 }
 </style>
         """,
         unsafe_allow_html=True
-        """,
-        unsafe_allow_html=True
     )
-
     # ==================================================
     # LOGO
     # ==================================================
