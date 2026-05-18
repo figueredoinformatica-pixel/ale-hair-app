@@ -494,64 +494,73 @@ elif st.session_state.tela == "agendamento":
     # CONSULTAR AGENDAMENTO
     # ==================================================
 
-    with st.expander("🔎 Já possui agendamento?"):
+    st.markdown("---")
 
-        telefone_busca = st.text_input(
-            "Digite seu WhatsApp",
-            placeholder="(11) 99999-9999",
-            max_chars=15,
-            key="consulta_agendamento"
+    st.markdown("## 🔎 Consultar agendamento")
+
+ # ==================================================
+# CONSULTAR AGENDAMENTO
+# ==================================================
+
+st.markdown("---")
+
+st.markdown("## 🔎 Consultar agendamento")
+
+telefone_busca = st.text_input(
+    "Digite seu WhatsApp",
+    placeholder="(11) 99999-9999",
+    max_chars=15,
+    key="consulta_agendamento"
+)
+
+if st.button(
+    "Consultar",
+    key="btn_consultar"
+):
+
+    db = SessionLocal()
+
+    resultados = buscar_agendamentos_por_telefone(
+        db,
+        telefone_busca
+    )
+
+    db.close()
+
+    if resultados:
+
+        st.success(
+            f"{len(resultados)} agendamento(s) encontrado(s)"
         )
 
-        if st.button(
-            "Consultar",
-            key="btn_consultar"
-        ):
+        for ag in resultados:
 
-            db = SessionLocal()
+            st.markdown(
+                f"""
+                <div class="resumo">
 
-            resultados = buscar_agendamentos_por_telefone(
-                db,
-                telefone_busca
+                <h3>
+                💈 {ag.servico}
+                </h3>
+
+                <p>
+                📅 {ag.data.strftime('%d/%m/%Y')}
+                </p>
+
+                <p>
+                ⏰ {ag.horario}
+                </p>
+
+                </div>
+                """,
+                unsafe_allow_html=True
             )
 
-            db.close()
+    else:
 
-            if resultados:
-
-                st.success(
-                    f"{len(resultados)} agendamento(s) encontrado(s)"
-                )
-
-                for ag in resultados:
-
-                    st.markdown(
-                        f"""
-                        <div class="resumo">
-
-                        <h3>
-                        💈 {ag.servico}
-                        </h3>
-
-                        <p>
-                        📅 {ag.data.strftime('%d/%m/%Y')}
-                        </p>
-
-                        <p>
-                        ⏰ {ag.horario}
-                        </p>
-
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-            else:
-
-                st.warning(
-                    "Nenhum agendamento encontrado."
-                )
-
+        st.warning(
+            "Nenhum agendamento encontrado."
+        )
 # ==================================================
 # LOGIN ADMIN
 # ==================================================
