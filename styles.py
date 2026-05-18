@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5 {
 }
 
 p, span, label, div {
-    color: #E5E7EB;
+    color: #FFFFFF;
 }
 
 /* ================================================== */
@@ -71,7 +71,7 @@ p, span, label, div {
 .hero-sub {
     margin-top: 12px;
     font-size: 18px;
-    color: #E5E7EB;
+    color: #FFFFFF;
 }
 
 /* ================================================== */
