@@ -1,4 +1,13 @@
 from models import Agendamento
+import re
+
+# ==================================================
+# LIMPAR TELEFONE
+# ==================================================
+
+def limpar_telefone(telefone):
+
+    return re.sub(r"\D", "", telefone)
 
 
 # ==================================================
@@ -14,6 +23,8 @@ def criar_agendamento(
     data,
     horario
 ):
+
+    telefone = limpar_telefone(telefone)
 
     novo = Agendamento(
         nome=nome,
@@ -97,6 +108,8 @@ def buscar_agendamentos_por_telefone(
     db,
     telefone
 ):
+
+    telefone = limpar_telefone(telefone)
 
     return db.query(
         Agendamento
