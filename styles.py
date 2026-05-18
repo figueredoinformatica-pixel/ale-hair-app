@@ -203,19 +203,4 @@ p, span, label, div {
 
 </style>
 """
-```
 
-## Resultado visual
-
-O app ficará com:
-
-* fundo preto premium
-* detalhes dourados
-* cards estilo app de luxo
-* visual parecido com:
-
-  * Booksy
-  * apps premium de barbearia
-  * dashboards dark modernos
-
-Também reduz bastante a aparência “padrão Streamlit”.
