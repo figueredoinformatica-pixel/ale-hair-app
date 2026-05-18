@@ -532,17 +532,36 @@ elif st.session_state.tela == "agendamento":
             "Nome Completo"
         )
 
-        telefone = st.text_input(
-            "WhatsApp"
-        )
+    import re
 
-        st.write("")
+    telefone = st.text_input(
+        "WhatsApp",
+        placeholder="(11) 99999-9999",
+        max_chars=15
+    )
+
+    # mascara automática
+    if telefone:
+        
+            numeros = re.sub(r"\D", "", telefone)
+
+            if len(numeros) >= 11:
+
+                telefone_formatado = (
+                f"({numeros[:2]}) "
+                f"{numeros[2:7]}-"
+                f"{numeros[7:11]}"
+            )
+
+            telefone = telefone_formatado
+
+    
 
         # ==========================================
         # CONFIRMAR
         # ==========================================
 
-        if st.button(
+    if st.button(
             "Confirmar Reserva",
             type="primary",
             width="stretch"
@@ -651,8 +670,22 @@ elif st.session_state.tela == "consultar":
     st.title("📅 Consultar Agendamento")
 
     telefone_busca = st.text_input(
-        "Digite seu WhatsApp"
-    )
+    "Digite seu WhatsApp",
+    placeholder="(11) 99999-9999",
+    max_chars=15
+)
+
+if telefone_busca:
+
+    numeros = re.sub(r"\D", "", telefone_busca)
+
+    if len(numeros) >= 11:
+
+        telefone_busca = (
+            f"({numeros[:2]}) "
+            f"{numeros[2:7]}-"
+            f"{numeros[7:11]}"
+        )
 
     if st.button(
         "Buscar",
