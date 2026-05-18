@@ -1,267 +1,226 @@
+# Tema Black Premium — Ale Hair
+
+Substitua seu `css_premium` atual por este.
+
+```python
 css_premium = """
 <style>
 
-/* ==================================================
-FUNDO
-================================================== */
+/* ================================================== */
+/* FUNDO GERAL */
+/* ================================================== */
 
-.stApp{
-    background-color:#F3F4F6;
+.stApp {
+    background: #0B0B0B;
+    color: #F5F5F5;
 }
 
-/* ==================================================
-HERO
-================================================== */
-
-.hero{
-    position:relative;
-    width:100%;
-    height:320px;
-    overflow:hidden;
-    border-radius:22px;
-    margin-bottom:25px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 900px;
 }
 
-.hero img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+/* ================================================== */
+/* TEXTOS */
+/* ================================================== */
+
+h1, h2, h3, h4, h5 {
+    color: #FFFFFF !important;
+    font-weight: 700;
 }
 
-.hero-overlay{
-    position:absolute;
-    inset:0;
-    background:linear-gradient(
-        to top,
-        rgba(0,0,0,0.75),
-        rgba(0,0,0,0.20)
+p, span, label, div {
+    color: #D1D5DB;
+}
+
+/* ================================================== */
+/* HERO */
+/* ================================================== */
+
+.hero {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+.hero img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    filter: brightness(0.55);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-title {
+    font-size: 52px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 2px;
+}
+
+.hero-sub {
+    margin-top: 12px;
+    font-size: 18px;
+    color: #E5E7EB;
+}
+
+/* ================================================== */
+/* CARDS */
+/* ================================================== */
+
+[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: 22px;
+    border: 1px solid #1F2937;
+    background: linear-gradient(
+        180deg,
+        #111827 0%,
+        #0F172A 100%
     );
-
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-end;
-    padding:28px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    padding: 10px;
 }
 
-.hero-title{
-    color:white;
-    font-size:42px;
-    font-weight:800;
-    line-height:1;
+/* ================================================== */
+/* RESUMOS */
+/* ================================================== */
+
+.resumo {
+    background: linear-gradient(
+        180deg,
+        #111827 0%,
+        #0B1220 100%
+    );
+    border: 1px solid #1F2937;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.30);
 }
 
-.hero-sub{
-    color:#E5E7EB;
-    margin-top:10px;
-    font-size:16px;
+/* ================================================== */
+/* INPUTS */
+/* ================================================== */
+
+.stTextInput input,
+.stDateInput input {
+    background-color: #111827 !important;
+    color: white !important;
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
 }
 
-/* ==================================================
-TEXTOS
-================================================== */
-
-.info-local{
-    margin-bottom:16px;
-    color:#6B7280;
-    font-size:15px;
+.stTextInput input:focus,
+.stDateInput input:focus {
+    border-color: #D4AF37 !important;
+    box-shadow: 0 0 0 1px #D4AF37 !important;
 }
 
-.avaliacao{
-    margin-bottom:28px;
-    font-size:17px;
-    font-weight:700;
-    color:#111827;
+/* ================================================== */
+/* BOTÕES */
+/* ================================================== */
+
+.stButton > button {
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(
+        90deg,
+        #D4AF37 0%,
+        #B8860B 100%
+    );
+    color: black;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
 }
 
-.titulo-secao{
-    margin-bottom:25px;
-    color:#111827;
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(212,175,55,0.30);
 }
 
-/* ==================================================
-SERVIÇOS
-================================================== */
+/* ================================================== */
+/* DATAFRAME */
+/* ================================================== */
 
-.nome-servico{
-    font-size:23px;
-    font-weight:800;
-    color:#111827;
-    margin-top:8px;
+[data-testid="stDataFrame"] {
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #1F2937;
 }
 
-.descricao-servico{
-    color:#6B7280;
-    font-size:14px;
-    margin-top:5px;
+/* ================================================== */
+/* EXPANDER */
+/* ================================================== */
+
+.streamlit-expanderHeader {
+    background: #111827;
+    border-radius: 12px;
+    color: white !important;
 }
 
-.tempo-servico{
-    margin-top:12px;
-    font-size:14px;
-    color:#111827;
-    font-weight:600;
+/* ================================================== */
+/* ALERTAS */
+/* ================================================== */
+
+[data-testid="stSuccess"] {
+    border-radius: 14px;
 }
 
-.preco-servico{
-    text-align:right;
-    margin-top:8px;
-    font-size:28px;
-    font-weight:800;
-    color:#111827;
+[data-testid="stWarning"] {
+    border-radius: 14px;
 }
 
-.icone-servico{
-    font-size:60px;
-    text-align:center;
+[data-testid="stError"] {
+    border-radius: 14px;
 }
 
-/* ==================================================
-CARDS
-================================================== */
+/* ================================================== */
+/* SCROLLBAR */
+/* ================================================== */
 
-[data-testid="stVerticalBlockBorderWrapper"]{
-    border-radius:22px !important;
-    border:1px solid #E5E7EB !important;
-    background:white !important;
-    box-shadow:0 2px 10px rgba(0,0,0,0.04);
-    padding:12px !important;
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-/* ==================================================
-BOTÕES
-================================================== */
-
-.stButton > button{
-    border-radius:14px !important;
-    height:48px !important;
-    font-weight:700 !important;
-    border:none !important;
-    transition:0.2s;
+::-webkit-scrollbar-track {
+    background: #111827;
 }
 
-.stButton > button[kind="primary"]{
-    background:#111827 !important;
-    color:white !important;
+::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 20px;
 }
 
-.stButton > button[kind="primary"]:hover{
-    background:#000000 !important;
-    transform:translateY(-1px);
+::-webkit-scrollbar-thumb:hover {
+    background: #4B5563;
 }
-
-/* ==================================================
-RESUMO
-================================================== */
-
-.resumo{
-    background:white;
-    border-radius:20px;
-    padding:24px;
-    margin-bottom:28px;
-    border:1px solid #E5E7EB;
-    box-shadow:0 2px 10px rgba(0,0,0,0.04);
-}
-
-.resumo h2{
-    color:#111827;
-    margin-bottom:12px;
-}
-
-.resumo p{
-    color:#374151;
-    font-size:16px;
-}
-
-/* ==================================================
-BARBEIRO
-================================================== */
-
-.barbeiro-card{
-    background:white;
-    border-radius:18px;
-    padding:24px;
-    border:1px solid #E5E7EB;
-    box-shadow:0 2px 10px rgba(0,0,0,0.04);
-    height:100%;
-}
-
-.barbeiro-card h2{
-    margin-bottom:5px;
-    color:#111827;
-}
-
-.barbeiro-card p{
-    color:#6B7280;
-}
-
-.avaliacao-barbeiro{
-    margin-top:14px;
-    font-weight:700;
-    color:#111827;
-}
-
-/* ==================================================
-INPUTS
-================================================== */
-
-.stTextInput input{
-    border-radius:12px !important;
-}
-
-.stDateInput input{
-    border-radius:12px !important;
-}
-
-/* ==================================================
-HEADER STREAMLIT
-================================================== */
-
-header{
-    visibility:hidden;
-}
-
-#MainMenu{
-    visibility:hidden;
-}
-
-footer{
-    visibility:hidden;
-}
-
-
-/* ==================================================
-HORÁRIOS PREMIUM
-================================================== */
-
-.horario-btn button{
-    border-radius:16px !important;
-    height:58px !important;
-    font-weight:700 !important;
-    font-size:16px !important;
-    border:1px solid #E5E7EB !important;
-    background:white !important;
-    transition:0.2s !important;
-}
-
-.horario-btn button:hover{
-    border:1px solid #111827 !important;
-    transform:translateY(-2px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
-
-.horario-ocupado button{
-    background:#F3F4F6 !important;
-    color:#9CA3AF !important;
-    border:1px solid #E5E7EB !important;
-}
-
-.horario-selected button{
-    background:#111827 !important;
-    color:white !important;
-    border:1px solid #111827 !important;
-
 
 </style>
 """
+```
 
+## Resultado visual
+
+O app ficará com:
+
+* fundo preto premium
+* detalhes dourados
+* cards estilo app de luxo
+* visual parecido com:
+
+  * Booksy
+  * apps premium de barbearia
+  * dashboards dark modernos
+
+Também reduz bastante a aparência “padrão Streamlit”.
