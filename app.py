@@ -89,7 +89,7 @@ with st.sidebar:
         ">
 
             <div style="
-                font-size:42px;
+                font-size:24px;
             ">
             ✂️
             </div>
