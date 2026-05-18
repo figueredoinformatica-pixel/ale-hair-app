@@ -674,18 +674,11 @@ elif st.session_state.tela == "consultar":
     placeholder="(11) 99999-9999",
     max_chars=15
 )
-
-if telefone_busca:
-
-    numeros = re.sub(r"\D", "", telefone_busca)
-
-    if len(numeros) >= 11:
-
-        telefone_busca = (
-            f"({numeros[:2]}) "
-            f"{numeros[2:7]}-"
-            f"{numeros[7:11]}"
-        )
+    telefone_busca = st.text_input(
+        "Digite seu WhatsApp",
+        placeholder="(11) 99999-9999",
+        max_chars=15
+)
 
     if st.button(
         "Buscar",
