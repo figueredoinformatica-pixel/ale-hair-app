@@ -56,52 +56,182 @@ st.markdown(
 )
 
 # ==================================================
-# SIDEBAR
+# SIDEBAR PREMIUM
 # ==================================================
 
 with st.sidebar:
 
     st.markdown(
         """
-        # ✂️ Ale Hair
-        """
+        <div style="
+            padding-top:10px;
+            padding-bottom:15px;
+        ">
+
+        <h1 style="
+            color:white;
+            margin-bottom:0;
+            font-size:32px;
+        ">
+        ✂️ Ale Hair
+        </h1>
+
+        <p style="
+            color:#9CA3AF;
+            margin-top:0;
+            font-size:14px;
+        ">
+        Premium Barber Shop
+        </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    # ==================================================
+    # DIVISÓRIA
+    # ==================================================
 
     st.markdown(
         """
-        ### 📍 Endereço
+        <div style="
+            height:2px;
+            width:100%;
+            background:linear-gradient(
+                90deg,
+                #D4AF37,
+                transparent
+            );
+            margin-top:5px;
+            margin-bottom:25px;
+            border-radius:10px;
+        "></div>
+        """,
+        unsafe_allow_html=True
+    )
 
-        Av. Amador Bueno da Veiga, 4438  
+    # ==================================================
+    # ENDEREÇO
+    # ==================================================
+
+    st.markdown(
+        """
+        <div style="
+            background:#111111;
+            padding:18px;
+            border-radius:14px;
+            border:1px solid #222;
+            margin-bottom:18px;
+        ">
+
+        <h3 style="
+            color:#D4AF37;
+            margin-top:0;
+        ">
+        📍 Endereço
+        </h3>
+
+        <p style="
+            color:white;
+            margin-bottom:5px;
+        ">
+        Av. Amador Bueno da Veiga, 4438
+        </p>
+
+        <p style="
+            color:#9CA3AF;
+            margin-top:0;
+        ">
         Penha de França - SP
-        """
+        </p>
+
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    # ==================================================
+    # HORÁRIOS
+    # ==================================================
 
     st.markdown(
         """
-        ### 🕒 Funcionamento
+        <div style="
+            background:#111111;
+            padding:18px;
+            border-radius:14px;
+            border:1px solid #222;
+            margin-bottom:18px;
+        ">
 
-        Segunda a Sexta  
+        <h3 style="
+            color:#D4AF37;
+            margin-top:0;
+        ">
+        🕒 Funcionamento
+        </h3>
+
+        <div style="
+            color:white;
+            line-height:1.8;
+        ">
+
+        Segunda a Sexta<br>
+        <span style="color:#9CA3AF;">
         08:00 às 20:00
+        </span>
 
-        Sábado  
+        <br><br>
+
+        Sábado<br>
+        <span style="color:#9CA3AF;">
         08:00 às 18:00
+        </span>
 
-        Domingo  
+        <br><br>
+
+        Domingo<br>
+        <span style="color:#EF4444;">
         Fechado
-        """
+        </span>
+
+        </div>
+
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    # ==================================================
+    # REDES
+    # ==================================================
+
+    st.markdown(
+        """
+        <div style="
+            height:2px;
+            width:100%;
+            background:linear-gradient(
+                90deg,
+                #D4AF37,
+                transparent
+            );
+            margin-top:10px;
+            margin-bottom:20px;
+            border-radius:10px;
+        "></div>
+        """,
+        unsafe_allow_html=True
+    )
 
     st.link_button(
         "📱 WhatsApp",
         "https://wa.me/5511999999999",
         use_container_width=True
     )
+
+    st.write("")
 
     st.link_button(
         "📸 Instagram",
