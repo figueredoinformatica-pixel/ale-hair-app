@@ -56,6 +56,60 @@ st.markdown(
 )
 
 # ==================================================
+# SIDEBAR
+# ==================================================
+
+with st.sidebar:
+
+    st.markdown(
+        """
+        # ✂️ Ale Hair
+        """
+    )
+
+    st.markdown("---")
+
+    st.markdown(
+        """
+        ### 📍 Endereço
+
+        Av. Amador Bueno da Veiga, 4438  
+        Penha de França - SP
+        """
+    )
+
+    st.markdown("---")
+
+    st.markdown(
+        """
+        ### 🕒 Funcionamento
+
+        Segunda a Sexta  
+        08:00 às 20:00
+
+        Sábado  
+        08:00 às 18:00
+
+        Domingo  
+        Fechado
+        """
+    )
+
+    st.markdown("---")
+
+    st.link_button(
+        "📱 WhatsApp",
+        "https://wa.me/5511999999999",
+        use_container_width=True
+    )
+
+    st.link_button(
+        "📸 Instagram",
+        "https://instagram.com/alehair",
+        use_container_width=True
+    )
+
+# ==================================================
 # SESSION STATE
 # ==================================================
 
@@ -183,90 +237,7 @@ if st.session_state.tela == "catalogo":
             unsafe_allow_html=True
         )
 
-    else:
 
-        st.title("✂️ Ale Hair")
-
-    # ==================================================
-    # ENDEREÇO
-    # ==================================================
-
-    st.markdown(
-        """
-        <div class="resumo">
-
-        <h3 style="margin-top:0;">
-        📍 Endereço
-        </h3>
-
-        <p>
-        Av. Amador Bueno da Veiga, 4438
-        </p>
-
-        <p>
-        Penha de França - São Paulo
-        </p>
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # ==================================================
-    # HORÁRIO
-    # ==================================================
-
-    st.markdown(
-        """
-        <div class="resumo">
-
-        <h3 style="margin-top:0;">
-        🕒 Horário de funcionamento
-        </h3>
-
-        <p>Segunda a Sexta → 08:00 às 20:00</p>
-
-        <p>Sábado → 08:00 às 18:00</p>
-
-        <p>Domingo → Fechado</p>
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # ==================================================
-    # REDES
-    # ==================================================
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        st.link_button(
-            "📱 WhatsApp",
-            "https://wa.me/5511999999999",
-            use_container_width=True
-        )
-
-    with col2:
-
-        st.link_button(
-            "📸 Instagram",
-            "https://instagram.com/alehair",
-            use_container_width=True
-        )
-
-    st.write("")
-
-    st.markdown(
-        """
-        <h2 style='margin-bottom:25px;'>
-        Serviços
-        </h2>
-        """,
-        unsafe_allow_html=True
-    )
 
     # ==================================================
     # SERVIÇOS
