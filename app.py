@@ -349,7 +349,8 @@ elif st.session_state.tela == "agendamento":
     st.button(
         "⬅️ Voltar",
         on_click=mudar_tela,
-        args=("catalogo",)
+        args=("catalogo",),
+        key="voltar_agendamento"
     )
 
     servico = st.session_state.servico
@@ -666,10 +667,11 @@ elif st.session_state.tela == "agendamento":
                 )
 
     st.button(
-        "⬅️ Voltar",
-        on_click=mudar_tela,
-        args=("catalogo",)
-    )
+    "⬅️ Voltar",
+    on_click=mudar_tela,
+    args=("catalogo",),
+    key="voltar_login"
+)
 
 # ==================================================
 # LOGIN ADMIN
@@ -745,7 +747,8 @@ elif st.session_state.tela == "painel":
     st.button(
         "⬅️ Voltar",
         on_click=mudar_tela,
-        args=("catalogo",)
+        args=("catalogo",),
+        key="voltar_consulta"
     )
 
     st.title("📊 Agenda")
