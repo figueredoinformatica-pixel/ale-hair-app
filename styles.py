@@ -1,8 +1,3 @@
-# Tema Black Premium — Ale Hair
-
-Substitua seu `css_premium` atual por este.
-
-```python
 css_premium = """
 <style>
 
