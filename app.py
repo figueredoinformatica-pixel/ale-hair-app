@@ -535,10 +535,11 @@ elif st.session_state.tela == "agendamento":
     import re
 
     telefone = st.text_input(
-        "WhatsApp",
-        placeholder="(11) 99999-9999",
-        max_chars=15
-    )
+    "WhatsApp",
+    placeholder="(11) 99999-9999",
+    max_chars=15,
+    key="telefone_cliente"
+)
 
     # mascara automática
     if telefone:
@@ -670,15 +671,12 @@ elif st.session_state.tela == "consultar":
     st.title("📅 Consultar Agendamento")
 
     telefone_busca = st.text_input(
-    "Digite seu WhatsApp",
-    placeholder="(11) 99999-9999",
-    max_chars=15
-)
-    telefone_busca = st.text_input(
         "Digite seu WhatsApp",
         placeholder="(11) 99999-9999",
-        max_chars=15
-)
+        max_chars=15,
+        key="telefone_busca"
+    )
+
 
     if st.button(
         "Buscar",
