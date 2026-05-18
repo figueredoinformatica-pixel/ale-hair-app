@@ -6,14 +6,18 @@ css_premium = """
 /* ================================================== */
 
 .stApp {
-    background: #0B0B0B;
+    background-color: #111111;
     color: #F5F5F5;
 }
 
+/* ================================================== */
+/* CONTAINER */
+/* ================================================== */
+
 .block-container {
+    max-width: 950px;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    max-width: 900px;
 }
 
 /* ================================================== */
@@ -26,7 +30,7 @@ h1, h2, h3, h4, h5 {
 }
 
 p, span, label, div {
-    color: #D1D5DB;
+    color: #E5E7EB;
 }
 
 /* ================================================== */
@@ -38,7 +42,6 @@ p, span, label, div {
     border-radius: 24px;
     overflow: hidden;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
 }
 
 .hero img {
@@ -51,8 +54,10 @@ p, span, label, div {
 .hero-overlay {
     position: absolute;
     inset: 0;
+
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
 }
@@ -61,7 +66,6 @@ p, span, label, div {
     font-size: 52px;
     font-weight: 800;
     color: white;
-    letter-spacing: 2px;
 }
 
 .hero-sub {
@@ -75,32 +79,33 @@ p, span, label, div {
 /* ================================================== */
 
 [data-testid="stVerticalBlockBorderWrapper"] {
+
     border-radius: 22px;
-    border: 1px solid #1F2937;
-    background: linear-gradient(
-        180deg,
-        #111827 0%,
-        #0F172A 100%
-    );
-    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+
+    border: 1px solid #2A2A2A;
+
+    background: #1A1A1A;
+
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+
     padding: 10px;
 }
 
 /* ================================================== */
-/* RESUMOS */
+/* RESUMO */
 /* ================================================== */
 
 .resumo {
-    background: linear-gradient(
-        180deg,
-        #111827 0%,
-        #0B1220 100%
-    );
-    border: 1px solid #1F2937;
+
+    background: #1A1A1A;
+
+    border: 1px solid #2A2A2A;
+
     border-radius: 20px;
+
     padding: 24px;
+
     margin-bottom: 20px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.30);
 }
 
 /* ================================================== */
@@ -109,15 +114,21 @@ p, span, label, div {
 
 .stTextInput input,
 .stDateInput input {
-    background-color: #111827 !important;
+
+    background-color: #222222 !important;
+
     color: white !important;
-    border: 1px solid #374151 !important;
+
+    border: 1px solid #3A3A3A !important;
+
     border-radius: 12px !important;
 }
 
 .stTextInput input:focus,
 .stDateInput input:focus {
+
     border-color: #D4AF37 !important;
+
     box-shadow: 0 0 0 1px #D4AF37 !important;
 }
 
@@ -126,22 +137,27 @@ p, span, label, div {
 /* ================================================== */
 
 .stButton > button {
+
     border-radius: 14px;
+
     border: none;
-    background: linear-gradient(
-        90deg,
-        #D4AF37 0%,
-        #B8860B 100%
-    );
-    color: black;
+
+    background: #D4AF37;
+
+    color: #111111;
+
     font-weight: 700;
+
     padding: 0.75rem 1rem;
-    transition: all 0.2s ease;
+
+    transition: 0.2s;
 }
 
 .stButton > button:hover {
+
     transform: translateY(-2px);
-    box-shadow: 0 8px 18px rgba(212,175,55,0.30);
+
+    background: #E6C65C;
 }
 
 /* ================================================== */
@@ -149,9 +165,12 @@ p, span, label, div {
 /* ================================================== */
 
 [data-testid="stDataFrame"] {
+
     border-radius: 18px;
+
     overflow: hidden;
-    border: 1px solid #1F2937;
+
+    border: 1px solid #2A2A2A;
 }
 
 /* ================================================== */
@@ -159,8 +178,11 @@ p, span, label, div {
 /* ================================================== */
 
 .streamlit-expanderHeader {
-    background: #111827;
+
+    background: #1A1A1A;
+
     border-radius: 12px;
+
     color: white !important;
 }
 
@@ -168,15 +190,10 @@ p, span, label, div {
 /* ALERTAS */
 /* ================================================== */
 
-[data-testid="stSuccess"] {
-    border-radius: 14px;
-}
-
-[data-testid="stWarning"] {
-    border-radius: 14px;
-}
-
+[data-testid="stSuccess"],
+[data-testid="stWarning"],
 [data-testid="stError"] {
+
     border-radius: 14px;
 }
 
@@ -189,18 +206,20 @@ p, span, label, div {
 }
 
 ::-webkit-scrollbar-track {
-    background: #111827;
+    background: #111111;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #374151;
+
+    background: #444444;
+
     border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4B5563;
+
+    background: #666666;
 }
 
 </style>
 """
-
