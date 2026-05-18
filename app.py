@@ -1,10 +1,13 @@
+# ==================================================
+# IMPORTS
+# ==================================================
+
 import streamlit as st
 import pandas as pd
 import datetime
 import os
 import base64
-
-
+import re
 
 # ==================================================
 # DATABASE
@@ -12,10 +15,11 @@ import base64
 
 from database import engine, SessionLocal
 from models import Base
+
 from services import (
     criar_agendamento,
     listar_agendamentos,
-    horarios_ocupados,
+    horarios_disponiveis,
     excluir_agendamento,
     buscar_agendamentos_por_telefone
 )
@@ -72,12 +76,18 @@ if "admin_logado" not in st.session_state:
 # ==================================================
 
 def mudar_tela(nome):
+
     st.session_state.tela = nome
 
 
 def abrir_agendamento(servico):
+
     st.session_state.servico = servico
+
+    st.session_state.horario = None
+
     st.session_state.tela = "agendamento"
+
 
 def login_admin(usuario, senha):
 
@@ -112,24 +122,28 @@ def logout_admin():
 # ==================================================
 
 dados = [
+
     {
         "Nome_Servico": "Corte Masculino",
         "Valor_Padrao": 40,
         "Tempo_Minutos": 30,
         "Imagem": "corte.png"
     },
+
     {
         "Nome_Servico": "Barba",
         "Valor_Padrao": 30,
         "Tempo_Minutos": 30,
         "Imagem": "barba.png"
     },
+
     {
         "Nome_Servico": "Combo Corte + Barba",
         "Valor_Padrao": 70,
         "Tempo_Minutos": 45,
         "Imagem": "corteebarba.png"
     }
+
 ]
 
 df_servicos = pd.DataFrame(dados)
@@ -145,6 +159,7 @@ if st.session_state.tela == "catalogo":
     if os.path.exists(hero_path):
 
         with open(hero_path, "rb") as img_file:
+
             hero_base64 = base64.b64encode(
                 img_file.read()
             ).decode()
@@ -178,33 +193,6 @@ if st.session_state.tela == "catalogo":
 
     st.markdown(
         """
-        <div style='
-            margin-bottom:20px;
-            color:#6B7280;
-            font-size:15px;
-        '>
-        📍 Av. Amador Bueno da Veiga, 4438 - Penha de França
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        """
-        <div style='
-            margin-bottom:25px;
-            font-size:16px;
-            font-weight:600;
-            color:#111827;
-        '>
-        ★ 5.0 • 120 avaliações
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        """
         <h2 style='margin-bottom:25px;'>
         Serviços
         </h2>
@@ -212,9 +200,8 @@ if st.session_state.tela == "catalogo":
         unsafe_allow_html=True
     )
 
- 
     # ==================================================
-    # LISTA DE SERVIÇOS
+    # SERVIÇOS
     # ==================================================
 
     for i, servico in df_servicos.iterrows():
@@ -223,9 +210,9 @@ if st.session_state.tela == "catalogo":
 
             c1, c2, c3 = st.columns([1.2, 3, 1.5])
 
-            # ==========================================
+            # ==================================================
             # IMAGEM
-            # ==========================================
+            # ==================================================
 
             with c1:
 
@@ -238,23 +225,9 @@ if st.session_state.tela == "catalogo":
                         width=95
                     )
 
-                else:
-
-                    st.markdown(
-                        """
-                        <div style='
-                            font-size:60px;
-                            text-align:center;
-                        '>
-                        ✂️
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
-            # ==========================================
+            # ==================================================
             # INFO
-            # ==========================================
+            # ==================================================
 
             with c2:
 
@@ -264,7 +237,6 @@ if st.session_state.tela == "catalogo":
                         font-size:22px;
                         font-weight:700;
                         margin-top:8px;
-                        color:#111827;
                     '>
                         {servico['Nome_Servico']}
                     </div>
@@ -275,7 +247,6 @@ if st.session_state.tela == "catalogo":
                 st.markdown(
                     """
                     <div style='
-                        color:#6B7280;
                         font-size:14px;
                         margin-top:4px;
                     '>
@@ -290,7 +261,6 @@ if st.session_state.tela == "catalogo":
                     <div style='
                         margin-top:10px;
                         font-size:14px;
-                        color:#111827;
                         font-weight:600;
                     '>
                         ⏱ {servico['Tempo_Minutos']} minutos
@@ -299,9 +269,9 @@ if st.session_state.tela == "catalogo":
                     unsafe_allow_html=True
                 )
 
-            # ==========================================
-            # PREÇO + BOTÃO
-            # ==========================================
+            # ==================================================
+            # PREÇO
+            # ==================================================
 
             with c3:
 
@@ -312,7 +282,6 @@ if st.session_state.tela == "catalogo":
                         margin-top:10px;
                         font-size:24px;
                         font-weight:700;
-                        color:#111827;
                     '>
                     R$ {servico['Valor_Padrao']}
                     </div>
@@ -334,10 +303,11 @@ if st.session_state.tela == "catalogo":
     st.write("")
 
     st.button(
-         "🔐 Área Administrativa",
+        "🔐 Área Administrativa",
         width="stretch",
         on_click=mudar_tela,
-        args=("login_admin",)
+        args=("login_admin",),
+        key="admin_btn"
     )
 
 # ==================================================
@@ -355,9 +325,9 @@ elif st.session_state.tela == "agendamento":
 
     servico = st.session_state.servico
 
-    # ==========================================
-    # RESUMO SERVIÇO
-    # ==========================================
+    # ==================================================
+    # RESUMO
+    # ==================================================
 
     st.markdown(
         f"""
@@ -380,13 +350,9 @@ elif st.session_state.tela == "agendamento":
         unsafe_allow_html=True
     )
 
-    st.write("")
-
-   
-
-    # ==========================================
+    # ==================================================
     # DATA
-    # ==========================================
+    # ==================================================
 
     st.markdown("## Escolha a data")
 
@@ -396,54 +362,32 @@ elif st.session_state.tela == "agendamento":
         label_visibility="collapsed"
     )
 
-    # ==========================================
+    # ==================================================
     # HORÁRIOS
-    # ==========================================
+    # ==================================================
 
     st.markdown("## Horários disponíveis")
 
-    horarios = [
-        "09:00",
-        "10:00",
-        "11:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00"
-    ]
-
     db = SessionLocal()
 
-    ocupados = horarios_ocupados(
+    horarios = horarios_disponiveis(
         db,
         data,
-        "Ale"
+        "Ale",
+        servico["Nome_Servico"]
     )
 
     db.close()
 
-    # cria session state se não existir
-    if "horario" not in st.session_state:
-        st.session_state.horario = None
-
-    # grid dos horários
     colunas = st.columns(4)
 
     for i, hora in enumerate(horarios):
 
         with colunas[i % 4]:
 
-            ocupado = hora in ocupados
-
             selecionado = (
                 st.session_state.horario == hora
             )
-
-            texto_botao = hora
-
-            if ocupado:
-                texto_botao = f"🔒 {hora}"
 
             tipo_botao = "secondary"
 
@@ -451,17 +395,21 @@ elif st.session_state.tela == "agendamento":
                 tipo_botao = "primary"
 
             if st.button(
-                texto_botao,
+                hora,
                 key=f"hora_{hora}",
-                disabled=ocupado,
                 type=tipo_botao,
                 width="stretch"
             ):
 
                 st.session_state.horario = hora
+
                 st.rerun()
 
     horario = st.session_state.horario
+
+    # ==================================================
+    # DADOS CLIENTE
+    # ==================================================
 
     if horario:
 
@@ -469,62 +417,53 @@ elif st.session_state.tela == "agendamento":
             f"Horário selecionado: {horario}"
         )
 
-        # ==========================================
-        # CLIENTE
-        # ==========================================
-
         st.markdown("## Seus dados")
 
         nome = st.text_input(
-            "Nome Completo"
+            "Nome Completo",
+            key="nome_cliente"
         )
 
-    import re
+        telefone = st.text_input(
+            "WhatsApp",
+            placeholder="(11) 99999-9999",
+            max_chars=15,
+            key="telefone_cliente"
+        )
 
-    telefone = st.text_input(
-    "WhatsApp",
-    placeholder="(11) 99999-9999",
-    max_chars=15,
-    key="telefone_cliente"
-)
+        if telefone:
 
-    # mascara automática
-    if telefone:
-        
-            numeros = re.sub(r"\D", "", telefone)
+            numeros = re.sub(
+                r"\D",
+                "",
+                telefone
+            )
 
             if len(numeros) >= 11:
 
-                telefone_formatado = (
-                f"({numeros[:2]}) "
-                f"{numeros[2:7]}-"
-                f"{numeros[7:11]}"
-            )
+                telefone = (
+                    f"({numeros[:2]}) "
+                    f"{numeros[2:7]}-"
+                    f"{numeros[7:11]}"
+                )
 
-            telefone = telefone_formatado
+        st.write("")
 
-    
-
-        # ==========================================
+        # ==================================================
         # CONFIRMAR
-        # ==========================================
+        # ==================================================
 
-    if st.button(
+        if st.button(
             "Confirmar Reserva",
             type="primary",
-            width="stretch"
+            width="stretch",
+            key="confirmar_reserva"
         ):
 
             if not nome or not telefone:
 
                 st.warning(
                     "Preencha todos os campos."
-                )
-
-            elif not horario:
-
-                st.warning(
-                    "Escolha um horário."
                 )
 
             else:
@@ -553,7 +492,6 @@ elif st.session_state.tela == "agendamento":
 
     # ==================================================
     # CONSULTAR AGENDAMENTO
-    # COLOCAR DENTRO DA TELA "agendamento"
     # ==================================================
 
     with st.expander("🔎 Já possui agendamento?"):
@@ -603,10 +541,6 @@ elif st.session_state.tela == "agendamento":
                         ⏰ {ag.horario}
                         </p>
 
-                        <p>
-                        ✂️ {ag.barbeiro}
-                        </p>
-
                         </div>
                         """,
                         unsafe_allow_html=True
@@ -618,13 +552,6 @@ elif st.session_state.tela == "agendamento":
                     "Nenhum agendamento encontrado."
                 )
 
-    st.button(
-    "⬅️ Voltar",
-    on_click=mudar_tela,
-    args=("catalogo",),
-    key="voltar_login"
-)
-
 # ==================================================
 # LOGIN ADMIN
 # ==================================================
@@ -634,52 +561,34 @@ elif st.session_state.tela == "login_admin":
     st.button(
         "⬅️ Voltar",
         on_click=mudar_tela,
-        args=("catalogo",)
+        args=("catalogo",),
+        key="voltar_login"
     )
 
-    st.markdown(
-        """
-        <h1 style='margin-bottom:0;'>
-        🔐 Área Administrativa
-        </h1>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        """
-        <p style='color:#6B7280;'>
-        Acesso restrito para administradores.
-        </p>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.write("")
+    st.title("🔐 Área Administrativa")
 
     usuario = st.text_input(
-        "Usuário"
+        "Usuário",
+        key="usuario_admin"
     )
 
     senha = st.text_input(
         "Senha",
-        type="password"
+        type="password",
+        key="senha_admin"
     )
-
-    st.write("")
 
     if st.button(
         "Entrar",
         type="primary",
-        width="stretch"
+        width="stretch",
+        key="entrar_admin"
     ):
 
         login_admin(
             usuario,
             senha
         )
-
-
 
 # ==================================================
 # PAINEL ADMIN
@@ -695,19 +604,19 @@ elif st.session_state.tela == "painel":
 
         st.stop()
 
-
     st.button(
         "⬅️ Voltar",
         on_click=mudar_tela,
         args=("catalogo",),
-        key="voltar_consulta"
+        key="voltar_painel"
     )
 
     st.title("📊 Agenda")
 
     st.button(
         "🚪 Sair",
-        on_click=logout_admin
+        on_click=logout_admin,
+        key="logout_admin"
     )
 
     db = SessionLocal()
@@ -721,13 +630,19 @@ elif st.session_state.tela == "painel":
         for a in agendamentos:
 
             dados.append({
+
                 "ID": a.id,
+
                 "Cliente": a.nome,
+
                 "Telefone": a.telefone,
+
                 "Serviço": a.servico,
-                "Barbeiro": a.barbeiro,
+
                 "Data": a.data.strftime("%d/%m/%Y"),
+
                 "Horário": a.horario
+
             })
 
         df = pd.DataFrame(dados)
@@ -738,18 +653,18 @@ elif st.session_state.tela == "painel":
             hide_index=True
         )
 
-        st.write("")
-
         ids = [a.id for a in agendamentos]
 
         id_excluir = st.selectbox(
             "Excluir agendamento",
-            ids
+            ids,
+            key="select_excluir"
         )
 
         if st.button(
             "Excluir Agendamento",
-            type="primary"
+            type="primary",
+            key="btn_excluir"
         ):
 
             excluir_agendamento(
