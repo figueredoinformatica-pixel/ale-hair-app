@@ -56,7 +56,7 @@ st.markdown(
 )
 
 # ==================================================
-# SIDEBAR
+# SIDEBAR PREMIUM
 # ==================================================
 
 with st.sidebar:
@@ -66,8 +66,12 @@ with st.sidebar:
         <style>
 
         section[data-testid="stSidebar"]{
-            background-color:#0B0B0B;
+            background-color:#050505;
             border-right:2px solid #D4AF37;
+        }
+
+        section[data-testid="stSidebar"] *{
+            color:white;
         }
 
         </style>
@@ -93,7 +97,7 @@ with st.sidebar:
             ">
 
                 <div style="
-                    font-size:40px;
+                    font-size:42px;
                 ">
                 ✂️
                 </div>
@@ -102,7 +106,7 @@ with st.sidebar:
 
                     <div style="
                         color:white;
-                        font-size:32px;
+                        font-size:30px;
                         font-weight:800;
                         line-height:1;
                     ">
@@ -111,11 +115,12 @@ with st.sidebar:
 
                     <div style="
                         color:#D4AF37;
-                        font-size:14px;
-                        letter-spacing:3px;
-                        margin-top:4px;
+                        font-size:12px;
+                        letter-spacing:4px;
+                        margin-top:5px;
+                        font-weight:600;
                     ">
-                    BARBEARIA
+                    BARBEARIA PREMIUM
                     </div>
 
                 </div>
@@ -131,7 +136,23 @@ with st.sidebar:
     # DIVISÓRIA
     # ==================================================
 
-    st.markdown("---")
+    st.markdown(
+        """
+        <div style="
+            height:1px;
+            background:linear-gradient(
+                to right,
+                transparent,
+                #D4AF37,
+                transparent
+            );
+            margin-top:20px;
+            margin-bottom:25px;
+        ">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
     # ENDEREÇO
@@ -140,40 +161,60 @@ with st.sidebar:
     st.markdown(
         """
         <div style="
-            margin-bottom:30px;
+            margin-bottom:25px;
         ">
 
-        <div style="
-            color:#D4AF37;
-            font-size:18px;
-            font-weight:700;
-            margin-bottom:12px;
-        ">
-        📍 ENDEREÇO
-        </div>
+            <div style="
+                color:#D4AF37;
+                font-size:17px;
+                font-weight:700;
+                margin-bottom:15px;
+            ">
+            📍 ENDEREÇO
+            </div>
 
-        <div style="
-            color:white;
-            font-size:15px;
-            line-height:1.8;
-        ">
-        Av. Amador Bueno da Veiga, 4438
-        </div>
+            <div style="
+                color:white;
+                font-size:15px;
+                line-height:1.8;
+            ">
+            Av. Amador Bueno da Veiga, 4438
+            </div>
 
-        <div style="
-            color:#9CA3AF;
-            font-size:14px;
-            margin-top:5px;
-        ">
-        Penha de França - São Paulo/SP
-        </div>
+            <div style="
+                color:#9CA3AF;
+                font-size:14px;
+                margin-top:5px;
+            ">
+            Penha de França - São Paulo/SP
+            </div>
 
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    # ==================================================
+    # DIVISÓRIA
+    # ==================================================
+
+    st.markdown(
+        """
+        <div style="
+            height:1px;
+            background:linear-gradient(
+                to right,
+                transparent,
+                #D4AF37,
+                transparent
+            );
+            margin-top:10px;
+            margin-bottom:25px;
+        ">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
     # HORÁRIOS
@@ -182,68 +223,96 @@ with st.sidebar:
     st.markdown(
         """
         <div style="
-            margin-bottom:30px;
+            margin-bottom:25px;
         ">
 
-        <div style="
-            color:#D4AF37;
-            font-size:18px;
-            font-weight:700;
-            margin-bottom:15px;
-        ">
-        🕒 HORÁRIO DE FUNCIONAMENTO
-        </div>
+            <div style="
+                color:#D4AF37;
+                font-size:17px;
+                font-weight:700;
+                margin-bottom:15px;
+            ">
+            🕒 HORÁRIO DE FUNCIONAMENTO
+            </div>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            color:white;
-            margin-bottom:10px;
-            font-size:14px;
-        ">
-            <span>Seg a Sex</span>
-            <span>08h às 20h</span>
-        </div>
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                color:white;
+                margin-bottom:10px;
+                font-size:14px;
+            ">
+                <span>Seg a Sex</span>
+                <span style="color:#D4AF37;">
+                08h às 20h
+                </span>
+            </div>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            color:white;
-            margin-bottom:10px;
-            font-size:14px;
-        ">
-            <span>Sábado</span>
-            <span>08h às 18h</span>
-        </div>
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                color:white;
+                margin-bottom:10px;
+                font-size:14px;
+            ">
+                <span>Sábado</span>
+                <span style="color:#D4AF37;">
+                08h às 18h
+                </span>
+            </div>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            color:white;
-            font-size:14px;
-        ">
-            <span>Domingo</span>
-            <span style="color:#EF4444;">
-            Fechado
-            </span>
-        </div>
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                color:white;
+                font-size:14px;
+            ">
+                <span>Domingo</span>
+
+                <span style="
+                    color:#EF4444;
+                    font-weight:600;
+                ">
+                Fechado
+                </span>
+            </div>
 
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown("---")
+    # ==================================================
+    # DIVISÓRIA
+    # ==================================================
+
+    st.markdown(
+        """
+        <div style="
+            height:1px;
+            background:linear-gradient(
+                to right,
+                transparent,
+                #D4AF37,
+                transparent
+            );
+            margin-top:10px;
+            margin-bottom:25px;
+        ">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # ==================================================
-    # REDES
+    # REDES SOCIAIS
     # ==================================================
 
     st.markdown(
         """
         <div style="
             color:#D4AF37;
-            font-size:18px;
+            font-size:17px;
             font-weight:700;
             margin-bottom:18px;
         ">
@@ -266,7 +335,6 @@ with st.sidebar:
         "https://instagram.com/alehair",
         use_container_width=True
     )
-
 # ==================================================
 # SESSION STATE
 # ==================================================
