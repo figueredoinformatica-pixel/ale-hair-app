@@ -382,55 +382,7 @@ elif st.session_state.tela == "agendamento":
 
     st.write("")
 
-    # ==========================================
-    # BARBEIRO
-    # ==========================================
-
-    st.markdown("## Seu barbeiro")
-
-    col1, col2 = st.columns([1, 2])
-
-    with col1:
-
-        foto = "assets/barbeiro_ale.jpg"
-
-        if os.path.exists(foto):
-
-            st.image(
-                foto,
-                width=120
-            )
-
-    with col2:
-
-        st.markdown(
-            """
-            <div class="barbeiro-card">
-
-            <h2 style="margin-bottom:0;">
-            Ale
-            </h2>
-
-            <p style="
-            color:#6B7280;
-            margin-top:8px;
-            ">
-            Especialista em degradê
-            </p>
-
-            <p style="
-            font-weight:700;
-            margin-top:14px;
-            ">
-            ★ 5.0
-            </p>
-
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    st.write("")
+   
 
     # ==========================================
     # DATA
