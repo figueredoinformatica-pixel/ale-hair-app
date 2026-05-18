@@ -29,8 +29,12 @@ h1, h2, h3, h4, h5 {
     font-weight: 700;
 }
 
-p, span, label, div {
-    color: #FFFFFF;
+* {
+    color: white !important;
+}
+
+small {
+    color: white !important;
 }
 
 /* ================================================== */
